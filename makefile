@@ -7,6 +7,7 @@ libflags := -shared -fpic
 lib_cxx_src := $(wildcard ${lib_src_d}/*cpp)
 lib_c_src := $(wildcard ${lib_src_d}/*.c)
 lib_cxx_header := lib/libcxx.h
+lib_cxx_templates := $(wildcard ${lib_src_d}/*.hpp)
 lib_c_header := lib/libc.h
 lib_d := $(shell pwd)/${out_d}/lib
 lib_cxx := ${lib_d}/lib_cxx.so
@@ -29,16 +30,18 @@ config:
 clean:
 	@rm out -rf
 
-run:
+run: out/${x}
 	@out/${x}
 
-${lib_cxx}: ${lib_cxx_src} ${lib_cxx_header}
-	@g++ ${cflags} ${cxxflags} ${libflags} -o $@ $^
+${lib_cxx}: ${lib_cxx_src} ${lib_cxx_header} ${lib_cxx_templates}
+	@g++ ${cflags} ${cxxflags} ${libflags} -o $@ ${lib_cxx_src} ${lib_cxx_header}
+
 ${lib_c}: ${lib_c_src} ${lib_header}
 	@gcc ${cflags} ${libflags} -o $@ $^
 
-${cxx_execs}: ${out_d}/%: %.cpp ${lib_cxx} ${lib_c}
-	@g++ -O0 ${cflags} ${cxxflags} $<  -o $@ ${link_load_flags} -l_cxx
+cxxdl := -lgtest -lpthread
+${cxx_execs}: ${out_d}/%: %.cpp ${lib_cxx} ${lib_c} ${lib_cxx_header} ${lib_cxx_templates}
+	@g++ -O0 ${cflags} ${cxxflags} $<  -o $@ ${link_load_flags} -l_cxx ${cxxdl}
 
 ${c_execs}: ${out_d}/%: %.c ${lib_cxx} ${lib_c}
 	@gcc -O0 ${cflags} $< -o $@ ${link_load_flags} -l_c -lm

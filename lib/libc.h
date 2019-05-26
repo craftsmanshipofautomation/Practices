@@ -27,12 +27,23 @@ void print_heap(int *arr, int size);
 void quicksort(int *arr, int size);
 void select_sort(int *arr, int size);
 
+// return -1 if not found
+// else return v's position
+int binary_search(int *arr, int size, int v);
+
+
 void swap(int *, int *);
 void swapc(char *, char *);
 void arrncpy(int *dest, int *src, int size);
 void copychars(char *dest, char *src, int size);
 int number_span(int n);
 
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+int** permute_r(int *arr, int size, int N, int* return_size, int** return_column_sizes);
 
 typedef struct heap_string
 {
