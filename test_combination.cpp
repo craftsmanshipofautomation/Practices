@@ -7,7 +7,7 @@ int main()
    
    do
    {
-      print(vec);
+      print(vec, 4);
    }
    while (NextCombination(vec, N))
       ;

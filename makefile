@@ -1,47 +1,138 @@
-exec_src_d := leetcode massive-data
-lib_src_d := lib
-out_d := out
-cflags := -Wall -g
-cxxflags := -std=c++11
-libflags := -shared -fpic
-lib_cxx_src := $(wildcard ${lib_src_d}/*cpp)
-lib_c_src := $(wildcard ${lib_src_d}/*.c)
-lib_cxx_header := lib/libcxx.h
-lib_cxx_templates := $(wildcard ${lib_src_d}/*.hpp)
-lib_c_header := lib/libc.h
-lib_d := $(shell pwd)/${out_d}/lib
-lib_cxx := ${lib_d}/lib_cxx.so
-lib_c := ${lib_d}/lib_c.so
+PKG_CONFIG := pkg-config
 
-link_load_flags := -Ilib -L${lib_d} -Wl,-rpath=${lib_d}
+define MKDIR?
+	$(shell mkdir -p $1)
+endef
 
-cxx_src := $(wildcard $(addsuffix *.cpp, $(addsuffix /,${exec_src_d}))) $(wildcard *.cpp)
-c_src := $(wildcard $(addsuffix *.c, $(addsuffix /,${exec_src_d}))) $(wildcard *.c)
-cxx_execs := ${cxx_src:%.cpp=${out_d}/%}
-c_execs   := ${c_src:%.c=${out_d}/%}
+OUTDIR := out
+$(call MKDIR?, ${OUTDIR})
+PROJECTDIR := $(shell pwd)
+LIBOUTDIR := ${PROJECTDIR}/out/lib
+$(call MKDIR?, ${LIBOUTDIR})
+LIBSRCDIR := lib
 
-all: ${lib_cxx} ${lib_c} ${cxx_execs} ${c_execs}
+# E denotes sources that use lib and mostly are executables
+# S denotes the otherwise which are mostly sub project
+EDIRS := leetcode test interview
+SDIRS := take-away
+EDIRS := $(addsuffix /,${EDIRS})
+SDIRS := $(addsuffix /,${SDIRS})
+EOUTDIRS := $(addprefix ${OUTDIR}/,${EDIRS})
+SOUTDIRS := $(addprefix ${OUTDIR}/,${SDIRS})
+$(foreach d,${EOUTDIRS},$(call MKDIR?,${d}))
+$(foreach d,${SOUTDIRS},$(call MKDIR?,${d}))
 
+CFLAGS := -std=c11
+CXXFLAGS := -std=c++11
+CPPFLAGS := -Wall -g -fsanitize=address -fpic
+INCLUDEFLAGS := -I${LIBSRCDIR}
+LOADFLAGS := -L${LIBOUTDIR}
+RPATH := -Wl,-rpath=${LIBOUTDIR}
+LIBFLAGS := -shared
+LINKFLAGSC := -lpthread -lm
+LINKFLAGSCXX := -lgtest -lpthread
+
+# must defer assignment to prevent expansion of automatic variables
+DEPFLAGS = -MT $$@ -MMD -MP -MF ${OUTDIR}/$$*.Td
+POSTCOMPILE = @mv -f ${OUTDIR}/$$*.Td ${OUTDIR}/$$*.d && touch $$@ # touch to update
+
+COMPILE.BASE.C = $(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS)
+COMPILE.BASE.CXX = $(CXX) $(DEPFLAGS) $(CXXFLAGS) $(CPPFLAGS) 
+# only objects has to do with *.d
+COMPILE.OBJ.C =       ${COMPILE.BASE.C}   -c $$<       -o $$@
+COMPILE.OBJ.CXX =     ${COMPILE.BASE.CXX} -c $$<       -o $$@
+COMPILE.EXE.OBJ.C =   ${COMPILE.OBJ.C}    ${INCLUDEFLAGS}
+COMPILE.EXE.OBJ.CXX = ${COMPILE.OBJ.CXX}  ${INCLUDEFLAGS}
+COMPILE.SO.C =        ${COMPILE.BASE.C}   ${LIBFLAGS}  -o $$@  $$^
+COMPILE.SO.CXX =      ${COMPILE.BASE.CXX} ${LIBFLAGS}  -o $$@  $$^
+COMPILE.EXE.C =       ${COMPILE.BASE.C}   ${LOADFLAGS} -o $$@  $$^ ${RPATH} ${LINKFLAGSC}   -l_c   
+COMPILE.EXE.CXX =     ${COMPILE.BASE.CXX} ${LOADFLAGS} -o $$@  $$^ ${RPATH} ${LINKFLAGSCXX} -l_cxx 
+
+LIBSRCDIR := lib
+LIBCXXSRC := $(wildcard ${LIBSRCDIR}/*.cpp)
+LIBCSRC := $(wildcard ${LIBSRCDIR}/*.c)
+
+LIBCXX := ${LIBOUTDIR}/lib_cxx.so
+LIBC := ${LIBOUTDIR}/lib_c.so
+
+ECXXSRC := $(wildcard $(addsuffix *.cpp, ${EDIRS})) $(wildcard *.cpp)
+ECSRC := $(wildcard $(addsuffix *.c, ${EDIRS})) $(wildcard *.c)
+
+CPPEXT :=.cpp
+CEXT :=.c
+OBJEXT :=.o
+SOEXT :=.so
+SPACE := 
+
+# $(call DECLARE,group,source-ext,name)
+define DECLARE
+${3}OBJS=$${${1}:%${2}=${OUTDIR}/%.o}
+${3}EXTLESS=$${${1}:%${2}=${OUTDIR}/%}
+${3}DEP=$${${1}:%${2}=${OUTDIR}/%.d}
+endef
+
+$(eval $(call DECLARE,LIBCXXSRC,${CPPEXT},LIBCXX))
+$(eval $(call DECLARE,LIBCSRC,${CEXT},LIBC))
+$(eval $(call DECLARE,ECXXSRC,${CPPEXT},ECXX))
+$(eval $(call DECLARE,ECSRC,${CEXT},EC))
+
+ECXX := ${ECXXEXTLESS}
+EC := ${ECEXTLESS}
+
+define MAKETARGETSFROMSOURCE
+${1}: ${OUTDIR}/%${2}: %${3} ${OUTDIR}/%.d
+	${4}
+	${POSTCOMPILE}	
+endef
+
+define MAKETARGETSFROMTARGETS
+${1}: %${2}: %${3}
+	${4}
+endef
+
+define  MAKELIBRARY
+${1}: %${2}: ${3}
+	${4}
+endef
+
+
+all: ${LIBCXX} ${LIBC} ${ECXX} ${EC}
+
+# LIBRARIES
+$(eval $(call MAKELIBRARY,${LIBCXX},${SOEXT},${LIBCXXOBJS},${COMPILE.SO.CXX}))
+$(eval $(call MAKELIBRARY,${LIBC},${SOEXT},${LIBCOBJS},${COMPILE.SO.C}))
+
+# LIBRARY OBJECTS
+$(eval $(call MAKETARGETSFROMSOURCE,${LIBCXXOBJS},${OBJEXT},${CPPEXT},${COMPILE.OBJ.CXX}))
+$(eval $(call MAKETARGETSFROMSOURCE,${LIBCOBJS},${OBJEXT},${CEXT},${COMPILE.OBJ.C}))
+
+# EXECUTABLE OBJECTS
+$(eval $(call MAKETARGETSFROMSOURCE,${ECXXOBJS},${OBJEXT},${CPPEXT},${COMPILE.EXE.OBJ.CXX}))
+$(eval $(call MAKETARGETSFROMSOURCE,${ECOBJS},${OBJEXT},${CEXT},${COMPILE.EXE.OBJ.C}))
+
+# EXECUTABLE
+$(eval $(call MAKETARGETSFROMTARGETS,${ECXX},${SPACE},${OBJEXT},${COMPILE.EXE.CXX}))
+$(eval $(call MAKETARGETSFROMTARGETS,${EC},${SPACE},${OBJEXT},${COMPILE.EXE.C}))
+
+# DEPENDENCIES
+
+ifneq "${MAKECMDGOALS}" "clean"
+include ${ECXXDEP} ${ECDEP} ${LIBCXXDEP} ${LIBCDEP}
+endif
+
+# SUB PROJECTS 
+
+%.d: ;
+
+.PRECIOUS: ${ECXXDEP} ${ECDEP} ${ECXXOBJS} ${ECOBJS} \
+			${LIBCXXDEP} ${LIBCDEP} ${LIBCXXOBJS} ${LIBCOBJS}
+
+.PHONY: config clean run
 config:
-	@mkdir -p ${lib_d}
 	@cd leetcode && /usr/bin/python3.6 generate.py
-	$(foreach d,${exec_src_d},$(shell mkdir -p ${out_d}/${d}))
 
 clean:
 	@rm out -rf
 
 run: out/${x}
 	@out/${x}
-
-${lib_cxx}: ${lib_cxx_src} ${lib_cxx_header} ${lib_cxx_templates}
-	@g++ ${cflags} ${cxxflags} ${libflags} -o $@ ${lib_cxx_src} ${lib_cxx_header}
-
-${lib_c}: ${lib_c_src} ${lib_header}
-	@gcc ${cflags} ${libflags} -o $@ $^
-
-cxxdl := -lgtest -lpthread
-${cxx_execs}: ${out_d}/%: %.cpp ${lib_cxx} ${lib_c} ${lib_cxx_header} ${lib_cxx_templates}
-	@g++ -O0 ${cflags} ${cxxflags} $<  -o $@ ${link_load_flags} -l_cxx ${cxxdl}
-
-${c_execs}: ${out_d}/%: %.c ${lib_cxx} ${lib_c}
-	@gcc -O0 ${cflags} $< -o $@ ${link_load_flags} -l_c -lm

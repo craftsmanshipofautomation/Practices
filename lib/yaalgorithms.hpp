@@ -21,6 +21,7 @@ void ya_rotate(P&& first, P&& first2, P&& last)
 }
 
 
+
 template<class P>
 void disjoint_rotate(P begin1, P end1, P begin2, P end2)
 {

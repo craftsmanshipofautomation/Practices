@@ -19,6 +19,7 @@ list<list<int>> PermuteI(list<int> nums, int N);
 vector<vector<int>> LexicographicalPermutatation(vector<int> nums);
 vector<vector<int>> Combination(vector<int> nums, int k);
 bool NextPermutation(vector<int> &vec);
+bool NextPermutation(vector<int> &vec, int k);
 bool NextCombination(vector<int> &vec, int N);
 
 template<class P>
@@ -28,6 +29,8 @@ void disjoint_rotate(P begin1, P end1, P begin2, P end2);
 
 template<typename T>
 void print(const T& t, bool newline = true);
+template<typename T>
+void print(const T& t, int N, bool newline = true);
 
 #include "printer.hpp"
 #include "yaalgorithms.hpp"

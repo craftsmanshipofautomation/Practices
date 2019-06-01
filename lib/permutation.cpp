@@ -102,3 +102,45 @@ vector<vector<int>> LexicographicalPermutatation(vector<int> nums)
    } while (NextPermutation(nums));
    return ret;
 }
+
+
+bool NextPermutation(vector<int> &vec, int k)
+{
+   if (k == 0 || k == 1)
+      return false;
+   auto first = vec.begin();
+   auto last = vec.end();
+   auto edge = first + k - 1;
+   // larger than edge
+   auto le = edge + 1;
+   for (; le != last; ++le)
+      if (*le > *edge) break;
+   //lzlog(*le, d);
+   //lzlog(*edge, d);   
+   if (le != last)
+   {
+     iter_swap(edge, le);
+   }
+   else
+   {
+      reverse(edge + 1, last);
+      //print(vec);
+      auto i = edge;
+      auto j = i + 1;
+      while (i > first && !(*--i < *--j));
+      if (i == first && !(*i < *j))
+         return false;
+      auto k = i;
+      while (k != last && *++k > *i);
+      --k;
+      //lzlog(*i, d);
+      //lzlog(*k, d);
+      iter_swap(i, k);
+      reverse(i + 1, last);
+   }
+   return true;
+   
+   
+   
+   
+}
