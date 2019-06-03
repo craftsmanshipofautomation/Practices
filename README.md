@@ -12,21 +12,8 @@ Currently `lib` is a collection of both C and C++ functions, with no further cla
 
 I do not deliberately use English to comment or generally, write things; I do it because I don't want to install Chinese input method on my Ubuntu machine, so that I can save my time from pressing shift to get the right input method, you see :)
 
-## The Design of Makefile
+## Structure
 
-It is not like projects with many modules, because, for example, `leetcode` is not a module, the real modules will exist in `lib/`, if I still use this playground, days after.
+Makefile is written with [Explicit Path Method](http://make.mad-scientist.net/papers/multi-architecture-builds/#explicitpath). (**TODO: use advanced vpath some other day!**)
 
-The Design is to put a top level makefile in the root directory, to describe how to build `lib/` and other directories which rely on `lib/`, with lazy and brutal wildcards. The directories that are independent will have a makefile themselves, which will be included in the top-level makefile later.
-
-In `lib/`, C++ headers use `.hpp` as extension as distinct from C `.h`.
-
-Also, I will mark `*.o`, the intermediate files not to be deleted, so as to speed up compilation. The intermediate files will be generated in `out` directory, to keep the project sources clean.
-
-
-
-
-
-
-
-
-
+`lib/` is the place for common code, and will be used to build shared libraries. C and C++ libraries will built separately. `leetcode/` contains my solution to some leetcode problems. `test/` simply tests. `take-home/` is for codes to be submitted to other people, for interviews or mercenary works. Those codes will not integrate `lib/` libraries, and had better be placed in another repository, but I think it belongs to the practice category, also I want to keep my github clean. In the future, there will be more directories added for the same reason.

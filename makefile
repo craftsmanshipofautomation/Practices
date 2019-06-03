@@ -41,12 +41,10 @@ COMPILE.BASE.CXX = $(CXX) $(DEPFLAGS) $(CXXFLAGS) $(CPPFLAGS)
 # only objects has to do with *.d
 COMPILE.OBJ.C =       ${COMPILE.BASE.C}   -c $$<       -o $$@
 COMPILE.OBJ.CXX =     ${COMPILE.BASE.CXX} -c $$<       -o $$@
-COMPILE.EXE.OBJ.C =   ${COMPILE.OBJ.C}    ${INCLUDEFLAGS}
-COMPILE.EXE.OBJ.CXX = ${COMPILE.OBJ.CXX}  ${INCLUDEFLAGS}
 COMPILE.SO.C =        ${COMPILE.BASE.C}   ${LIBFLAGS}  -o $$@  $$^
 COMPILE.SO.CXX =      ${COMPILE.BASE.CXX} ${LIBFLAGS}  -o $$@  $$^
-COMPILE.EXE.C =       ${COMPILE.BASE.C}   ${LOADFLAGS} -o $$@  $$^ ${RPATH} ${LINKFLAGSC}   -l_c   
-COMPILE.EXE.CXX =     ${COMPILE.BASE.CXX} ${LOADFLAGS} -o $$@  $$^ ${RPATH} ${LINKFLAGSCXX} -l_cxx 
+COMPILE.EXE.C =       ${COMPILE.BASE.C}   ${INCLUDEFLAGS} ${LOADFLAGS} -o $$@  $$< ${RPATH} ${LINKFLAGSC}   -l_c   
+COMPILE.EXE.CXX =     ${COMPILE.BASE.CXX} ${INCLUDEFLAGS} ${LOADFLAGS} -o $$@  $$< ${RPATH} ${LINKFLAGSCXX} -l_cxx 
 
 LIBSRCDIR := lib
 LIBCXXSRC := $(wildcard ${LIBSRCDIR}/*.cpp)
@@ -79,22 +77,16 @@ $(eval $(call DECLARE,ECSRC,${CEXT},EC))
 ECXX := ${ECXXEXTLESS}
 EC := ${ECEXTLESS}
 
-define MAKETARGETSFROMSOURCE
+define MAKETARGETS
 ${1}: ${OUTDIR}/%${2}: %${3} ${OUTDIR}/%.d
 	${4}
 	${POSTCOMPILE}	
-endef
-
-define MAKETARGETSFROMTARGETS
-${1}: %${2}: %${3}
-	${4}
 endef
 
 define  MAKELIBRARY
 ${1}: %${2}: ${3}
 	${4}
 endef
-
 
 all: ${LIBCXX} ${LIBC} ${ECXX} ${EC}
 
@@ -103,21 +95,17 @@ $(eval $(call MAKELIBRARY,${LIBCXX},${SOEXT},${LIBCXXOBJS},${COMPILE.SO.CXX}))
 $(eval $(call MAKELIBRARY,${LIBC},${SOEXT},${LIBCOBJS},${COMPILE.SO.C}))
 
 # LIBRARY OBJECTS
-$(eval $(call MAKETARGETSFROMSOURCE,${LIBCXXOBJS},${OBJEXT},${CPPEXT},${COMPILE.OBJ.CXX}))
-$(eval $(call MAKETARGETSFROMSOURCE,${LIBCOBJS},${OBJEXT},${CEXT},${COMPILE.OBJ.C}))
-
-# EXECUTABLE OBJECTS
-$(eval $(call MAKETARGETSFROMSOURCE,${ECXXOBJS},${OBJEXT},${CPPEXT},${COMPILE.EXE.OBJ.CXX}))
-$(eval $(call MAKETARGETSFROMSOURCE,${ECOBJS},${OBJEXT},${CEXT},${COMPILE.EXE.OBJ.C}))
+$(eval $(call MAKETARGETS,${LIBCXXOBJS},${OBJEXT},${CPPEXT},${COMPILE.OBJ.CXX}))
+$(eval $(call MAKETARGETS,${LIBCOBJS},${OBJEXT},${CEXT},${COMPILE.OBJ.C}))
 
 # EXECUTABLE
-$(eval $(call MAKETARGETSFROMTARGETS,${ECXX},${SPACE},${OBJEXT},${COMPILE.EXE.CXX}))
-$(eval $(call MAKETARGETSFROMTARGETS,${EC},${SPACE},${OBJEXT},${COMPILE.EXE.C}))
+$(eval $(call MAKETARGETS,${ECXX},${SPACE},${CPPEXT},${COMPILE.EXE.CXX}))
+$(eval $(call MAKETARGETS,${EC},${SPACE},${CEXT},${COMPILE.EXE.C}))
 
 # DEPENDENCIES
 
 ifneq "${MAKECMDGOALS}" "clean"
-include ${ECXXDEP} ${ECDEP} ${LIBCXXDEP} ${LIBCDEP}
+-include ${ECXXDEP} ${ECDEP} ${LIBCXXDEP} ${LIBCDEP}
 endif
 
 # SUB PROJECTS 
@@ -135,4 +123,4 @@ clean:
 	@rm out -rf
 
 run: out/${x}
-	@out/${x}
+	@make --silent && out/${x}
