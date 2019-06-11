@@ -14,6 +14,6 @@ I do not deliberately use English to comment or generally, write things; I do it
 
 ## Structure
 
-Makefile is written with [Explicit Path Method](http://make.mad-scientist.net/papers/multi-architecture-builds/#explicitpath). (**TODO: use advanced vpath some other day!**)
+Makefile is written with [Explicit Path Method](http://make.mad-scientist.net/papers/multi-architecture-builds/#explicitpath). (**TODO: to employ advanced vpath method some other day!**)
 
 `lib/` is the place for common code, and will be used to build shared libraries. C and C++ libraries will built separately. `leetcode/` contains my solution to some leetcode problems. `test/` simply tests. `take-home/` is for codes to be submitted to other people, for interviews or mercenary works. Those codes will not integrate `lib/` libraries, and had better be placed in another repository, but I think it belongs to the practice category, also I want to keep my github clean. In the future, there will be more directories added for the same reason.

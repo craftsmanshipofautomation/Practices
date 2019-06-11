@@ -13,7 +13,7 @@ LIBSRCDIR := lib
 
 # E denotes sources that use lib and mostly are executables
 # S denotes the otherwise which are mostly sub project
-EDIRS := leetcode test interview
+EDIRS := leetcode test interview rivendell
 SDIRS := take-away
 EDIRS := $(addsuffix /,${EDIRS})
 SDIRS := $(addsuffix /,${SDIRS})
@@ -24,7 +24,9 @@ $(foreach d,${SOUTDIRS},$(call MKDIR?,${d}))
 
 CFLAGS := -std=c11
 CXXFLAGS := -std=c++11
-CPPFLAGS := -Wall -g -fsanitize=address -fpic
+#CPPFLAGS := -Wall -g -fsanitize=address -fpic -O3
+# -fsanitize=address will generate extra checking code
+CPPFLAGS := -Wall -g -fpic -O0
 INCLUDEFLAGS := -I${LIBSRCDIR}
 LOADFLAGS := -L${LIBOUTDIR}
 RPATH := -Wl,-rpath=${LIBOUTDIR}
@@ -43,8 +45,8 @@ COMPILE.OBJ.C =       ${COMPILE.BASE.C}   -c $$<       -o $$@
 COMPILE.OBJ.CXX =     ${COMPILE.BASE.CXX} -c $$<       -o $$@
 COMPILE.SO.C =        ${COMPILE.BASE.C}   ${LIBFLAGS}  -o $$@  $$^
 COMPILE.SO.CXX =      ${COMPILE.BASE.CXX} ${LIBFLAGS}  -o $$@  $$^
-COMPILE.EXE.C =       ${COMPILE.BASE.C}   ${INCLUDEFLAGS} ${LOADFLAGS} -o $$@  $$< ${RPATH} ${LINKFLAGSC}   -l_c   
-COMPILE.EXE.CXX =     ${COMPILE.BASE.CXX} ${INCLUDEFLAGS} ${LOADFLAGS} -o $$@  $$< ${RPATH} ${LINKFLAGSCXX} -l_cxx 
+COMPILE.EXE.C =       ${COMPILE.BASE.C}   ${INCLUDEFLAGS} ${LOADFLAGS} -o $$@  $$< ${RPATH} -l_c   ${LINKFLAGSC}      
+COMPILE.EXE.CXX =     ${COMPILE.BASE.CXX} ${INCLUDEFLAGS} ${LOADFLAGS} -o $$@  $$< ${RPATH} -l_cxx ${LINKFLAGSCXX}  
 
 LIBSRCDIR := lib
 LIBCXXSRC := $(wildcard ${LIBSRCDIR}/*.cpp)
@@ -122,5 +124,5 @@ config:
 clean:
 	@rm out -rf
 
-run: out/${x}
-	@make --silent && out/${x}
+run: out/$(shell echo ${x} | sed "s,\(.*\)\..*,\1,")
+	@make --silent && $<

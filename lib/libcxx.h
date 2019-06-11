@@ -35,5 +35,6 @@ void print(const T& t, int N, bool newline = true);
 #include "printer.hpp"
 #include "yaalgorithms.hpp"
 #include "gtest.hpp"
+#include "string-matching.hpp"
 
 #endif

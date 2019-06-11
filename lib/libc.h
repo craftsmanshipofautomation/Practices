@@ -73,6 +73,9 @@ int right_child(int i);
 int is_leaf(int size, int index);
 
 
+#include "tree.h"
+#include "string-matching.h"
+
 //#include "csapp.h"
 
 
