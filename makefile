@@ -13,7 +13,7 @@ LIBSRCDIR := lib
 
 # E denotes sources that use lib and mostly are executables
 # S denotes the otherwise which are mostly sub project
-EDIRS := leetcode test interview rivendell
+EDIRS := leetcode test interview rivendell mercenary
 SDIRS := take-away
 EDIRS := $(addsuffix /,${EDIRS})
 SDIRS := $(addsuffix /,${SDIRS})

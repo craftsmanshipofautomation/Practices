@@ -57,7 +57,7 @@ vector<size_t> kmp_search(const std::string& text, const std::string& pat)
          ret.push_back(curr - pat.size());
       }
       k = pi[k-1];
-      curr -= k;
+      curr -= k;         
    }
    return ret;
 }
