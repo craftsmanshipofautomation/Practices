@@ -36,5 +36,6 @@ void print(const T& t, int N, bool newline = true);
 #include "yaalgorithms.hpp"
 #include "gtest.hpp"
 #include "string-matching.hpp"
+#include "encoding.h"
 
 #endif
