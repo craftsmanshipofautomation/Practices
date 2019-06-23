@@ -1,19 +1,27 @@
-## 1
 
-`lib/` (provide basic functions)
+## **Table of Contents**
+- [Project Structure](#project-structure)
+    - [Makefile](#makefile)
 
-Other directories collect executables relying on `lib/`
+-------
 
-Some are independent, they have their own header and library, such as interview questions, and any other code that requires to hand over to other people, such code must not depend on `lib/`
+## Project Structure
 
-Currently `lib` is a collection of both C and C++ functions, with no further classification, just for convenience.
+`lib/`, as its name suggests, serves as library code, for the sake of convenience, both C and C++ functions goes there, but are built into 2 different shared library, namely `lib_c.so` and `lib_cxx.so`.
 
-## 2
+Codes on some directories depend heavily on the 2 lib, such like `test`, `leetcode`, `interview`.
 
-I do not deliberately use English to comment or generally, write things; I do it because I don't want to install Chinese input method on my Ubuntu machine, so that I can save my time from pressing shift to get the right input method, you see :)
+Some are independent, their reason to stay in this repository is to avoid pollution of my github. They are to be taken way, handed over, such like offline-interview questions which interviewers ask you to finish at home, and some mercenary work, such as school homework those college students do not wish to do.~~(every coin counts before you get a job)~~.
 
-## Structure
+### Makefile
 
-Makefile is written with [Explicit Path Method](http://make.mad-scientist.net/papers/multi-architecture-builds/#explicitpath). (**TODO: to employ advanced vpath method some other day!**)
+Makefile is written with [Explicit Path Method](http://make.mad-scientist.net/papers/multi-architecture-builds/#explicitpath). ~~(the advanced vpath method shall be employed one day)~~
 
-`lib/` is the place for common code, and will be used to build shared libraries. C and C++ libraries will built separately. `leetcode/` contains my solution to some leetcode problems. `test/` simply tests. `take-home/` is for codes to be submitted to other people, for interviews or mercenary works. Those codes will not integrate `lib/` libraries, and had better be placed in another repository, but I think it belongs to the practice category, also I want to keep my github clean. In the future, there will be more directories added for the same reason.
+## Things of interest
+
+|Code|Description|
+|--|--|
+|[makefile](https://github.com/openswords/Practices/blob/master/makefile)|monsterous make|
+|[24-point](https://github.com/openswords/Practices/blob/master/mercenary/24r.c)|the generic form of 24-point game|
+|[next_combination](https://github.com/openswords/Practices/blob/master/lib/combination.cpp)|similar to next_permutation|
+|[find the kth number](https://github.com/openswords/Practices/blob/master/interview/find-kth-largest-number-using-qsort.c)|its time complexity is O(n)|
