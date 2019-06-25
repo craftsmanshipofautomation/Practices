@@ -2,6 +2,7 @@
 ## **Table of Contents**
 - [Project Structure](#project-structure)
     - [Makefile](#makefile)
+- [Things of interest](#things-of-interest)
 
 -------
 
@@ -25,3 +26,4 @@ Makefile is written with [Explicit Path Method](http://make.mad-scientist.net/pa
 |[24-point](https://github.com/openswords/Practices/blob/master/mercenary/24r.c)|the generic form of 24-point game|
 |[next_combination](https://github.com/openswords/Practices/blob/master/lib/combination.cpp)|similar to next_permutation|
 |[find the kth number](https://github.com/openswords/Practices/blob/master/interview/find-kth-largest-number-using-qsort.c)|its time complexity is O(n)|
+|[print a tree](https://github.com/openswords/Practices/tree/master/test/test_tree.cpp)|It's easier to print a tree this way|

@@ -24,9 +24,9 @@ $(foreach d,${SOUTDIRS},$(call MKDIR?,${d}))
 
 CFLAGS := -std=c11
 CXXFLAGS := -std=c++11
-#CPPFLAGS := -Wall -g -fsanitize=address -fpic -O3
+CPPFLAGS := -Wall -g -fsanitize=address -fpic -O0
 # -fsanitize=address will generate extra checking code
-CPPFLAGS := -Wall -g -fpic -O0
+#CPPFLAGS := -Wall -g -fpic -O0
 INCLUDEFLAGS := -I${LIBSRCDIR}
 LOADFLAGS := -L${LIBOUTDIR}
 RPATH := -Wl,-rpath=${LIBOUTDIR}
