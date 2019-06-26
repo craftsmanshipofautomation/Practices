@@ -1,3 +1,7 @@
+#ifndef LIB_ENCODING_H
+#define LIB_ENCODING_H
+
+
 #include "libcxx.h"
 
 /**
@@ -11,3 +15,6 @@ typedef unsigned char uchar;
 // return true if that character need a % prefix
 // decimal to hex string, 2 character space width is enough
 bool base64_encode(char in, char out[2]);
+
+
+#endif

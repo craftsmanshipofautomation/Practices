@@ -13,7 +13,7 @@ LIBSRCDIR := lib
 
 # E denotes sources that use lib and mostly are executables
 # S denotes the otherwise which are mostly sub project
-EDIRS := leetcode test interview rivendell mercenary
+EDIRS := leetcode test interview csapp mercenary
 SDIRS := take-away
 EDIRS := $(addsuffix /,${EDIRS})
 SDIRS := $(addsuffix /,${SDIRS})
@@ -22,7 +22,8 @@ SOUTDIRS := $(addprefix ${OUTDIR}/,${SDIRS})
 $(foreach d,${EOUTDIRS},$(call MKDIR?,${d}))
 $(foreach d,${SOUTDIRS},$(call MKDIR?,${d}))
 
-CFLAGS := -std=c11
+# -std=c11 is harmful
+CFLAGS := -m64
 CXXFLAGS := -std=c++11
 CPPFLAGS := -Wall -g -fsanitize=address -fpic -O0
 # -fsanitize=address will generate extra checking code
