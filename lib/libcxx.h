@@ -40,5 +40,9 @@ void print(const T& t, int N, bool newline = true);
 //#include "tree.hpp" // poisonously slow
 #include "exceptions.h"
 #include "csapp.h"
+#include "socket.h"
+#include "tcp.h"
+
+void echo(int connfd);
 
 #endif

@@ -1,36 +1,48 @@
 #ifndef LIB_SOCKET_H
 #define LIB_SOCKET_H
-#include <string>
 #include "csapp.h"
+#include <string>
+#include <memory>
 
-class TCPClient
+namespace S
+{
+class Socket
 {
   public:
-    TCPClient(char *host, char *port);
-    ~TCPClient();
-    void Write(const std::string &str);
-    const char *Read();
+  Socket();
+  Socket(int fd);
+  Socket(Socket&&);  
+  Socket & operator=(Socket &&);  
+  ~Socket();
+  size_t Write(const char* str);
+  size_t Read();
+  int fd() { return fd_; }
+  const char* str();
+  private:
+  Socket(const Socket &) = delete;
+  static void Move(Socket& dest, Socket& src);
+  private:
+    int fd_;
+    rio_t* rio_;
+    char* buf_;
+    int bufsize_;
+};
+}
+
+// listening socket
+class LSocket
+{
+  public:
+    LSocket(int fd);
+    ~LSocket();
+    S::Socket Accept();
 
   private:
-    int client_fd_;
-    riot_t rio_;
-    char buf_[MAXLINE];
-};
-
-
-class TCPServer
-{
-    public:
-    TCPServer(char* port);
-    
-    
-    private:
-    struct sockaddr_storage clientaddr_; 
-    int listenfd_;
-    int connfd_;
-    int clientlen_;
-    char client_hostname[MAXLINE];
-    char client_port[MAXLINE];
+    int lfd_;
+    struct sockaddr_storage clientaddr_;
+    socklen_t clientlen_;
+    char client_hostname_[MAXLINE];
+    char client_port_[MAXLINE];
 };
 
 
