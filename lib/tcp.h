@@ -9,7 +9,7 @@ class TCPClient
     TCPClient(const char *host, const char *port);
     ~TCPClient();
     void Write(const char *str);
-    const char *Read();
+    std::string Read();
 
   private:
     S::Socket socket_;    
@@ -19,14 +19,15 @@ class TCPServer
 {
   public:
     TCPServer(const char *port);
-    void Accept();
+    S::Socket Accept();
     void Close();
-    const char* Read();
+    std::string Read();
     void Write(const char* str);
+    int fd();
+
 
   private:
     LSocket listening_socket_;
-    S::Socket conn_socket_;
 };
 
 #endif

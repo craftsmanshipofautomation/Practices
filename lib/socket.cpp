@@ -1,5 +1,4 @@
-#include "socket.h"
-#include <iostream>
+#include "libcxx.h"
 
 namespace S
 {
@@ -39,21 +38,24 @@ Socket& Socket::operator=(Socket &&socket)
 Socket::~Socket() 
 { 
     if (fd_ != -1)
-        Close(fd_);
+        ::Close(fd_);
     if (buf_)
         delete[] buf_;
     if (rio_)
         delete rio_;
 }
-
+void Socket::Close()
+{
+    ::Close(fd_);
+    fd_ = -1;
+}
 size_t Socket::Write(const char* str)
 {
     int len = strlen(str);
-    if (len > MAXLINE-1)
-        len = MAXLINE-1;
+    if (len > MAXLINE)
+        len = MAXLINE;
     strncpy(buf_, str, len);
-    buf_[len] = '\n'; // this is fatal
-    Rio_writen(fd_, buf_, len+1);
+    Rio_writen(fd_, buf_, len);
     return len;
 }
 
@@ -64,22 +66,29 @@ size_t Socket::Read()
     return bufsize_;
 }
 
-const char* Socket::str()
+std::string Socket::str()
 {
     if (bufsize_ > 0)
         buf_[bufsize_-1] = '\0';
-    return buf_;
+    return std::string(buf_);
 }
 
 } // namespace S
 
 LSocket::LSocket(int fd) : lfd_(fd), clientlen_(sizeof(struct sockaddr_storage))
 {
+    int yes;
+    setsockopt(lfd_, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
 }
-
+void LSocket::Close()
+{
+    ::Close(lfd_);
+    lfd_ = -1;
+}
 LSocket::~LSocket()
 {
-    Close(lfd_);
+    if (lfd_ != -1)
+        ::Close(lfd_);
 }
 
 S::Socket LSocket::Accept()

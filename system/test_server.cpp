@@ -5,10 +5,11 @@ using namespace std;
 int main()
 {
     TCPServer server("1083");
-    server.Accept();
+    S::Socket conn = server.Accept();
     cout << "server has accepted" << endl;    
-    string from_client = server.Read();
+    conn.Read();
+    string from_client = conn.str();
     cout << "client says: " << from_client << endl;
-    server.Write("Fuck off");
+    conn.Write("Fuck off\n");
     exit(0);
 }

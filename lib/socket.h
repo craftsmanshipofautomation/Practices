@@ -16,15 +16,16 @@ class Socket
   ~Socket();
   size_t Write(const char* str);
   size_t Read();
+  void Close();
   int fd() { return fd_; }
-  const char* str();
+  std::string str();
   private:
   Socket(const Socket &) = delete;
   static void Move(Socket& dest, Socket& src);
   private:
     int fd_;
     rio_t* rio_;
-    char* buf_;
+    char* buf_; 
     int bufsize_;
 };
 }
@@ -35,6 +36,8 @@ class LSocket
   public:
     LSocket(int fd);
     ~LSocket();
+    void Close();
+    int fd() { return lfd_; }
     S::Socket Accept();
 
   private:
@@ -45,5 +48,7 @@ class LSocket
     char client_port_[MAXLINE];
 };
 
-
+// todo: 
+//  1. rename socket to tcp socket
+//  2. add udp socket
 #endif

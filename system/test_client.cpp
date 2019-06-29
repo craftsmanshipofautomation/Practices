@@ -5,7 +5,7 @@ using namespace std;
 int main()
 {
     TCPClient client("127.0.0.1", "1083");
-    client.Write("Hello");
+    client.Write("Hello\n");
     cout << "hello has been written" << endl;
     string response = client.Read();
     cout << "server responses: " << response << endl;

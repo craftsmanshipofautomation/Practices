@@ -32,12 +32,13 @@ void print(const T& t, bool newline = true);
 template<typename T>
 void print(const T& t, int N, bool newline = true);
 
+// poisonously slow but convinient
 #include "printer.hpp"
 #include "yaalgorithms.hpp"
 #include "gtest.hpp"
 #include "string-matching.hpp"
 #include "encoding.h"
-//#include "tree.hpp" // poisonously slow
+#include "tree.hpp"
 #include "exceptions.h"
 #include "csapp.h"
 #include "socket.h"
