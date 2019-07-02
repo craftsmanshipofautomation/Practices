@@ -77,7 +77,7 @@ std::string Socket::str()
 
 LSocket::LSocket(int fd) : lfd_(fd), clientlen_(sizeof(struct sockaddr_storage))
 {
-    int yes;
+    int yes = 1;
     setsockopt(lfd_, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
 }
 void LSocket::Close()
