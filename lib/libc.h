@@ -76,6 +76,8 @@ int is_leaf(int size, int index);
 #include "string-matching.h"
 
 #include "csapp.h"
+#include "linked_list.h"
+
 
 
 #endif
