@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <bits/stdc++.h>
 #include <gtest/gtest.h>
+#include <fstream>
 
 
 using std::vector;
@@ -44,6 +45,6 @@ void print(const T& t, int N, bool newline = true);
 #include "socket.h"
 #include "tcp.h"
 
-void echo(int connfd);
+#include "graph.h"
 
 #endif

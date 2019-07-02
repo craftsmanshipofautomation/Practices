@@ -13,7 +13,7 @@ LIBSRCDIR := lib
 
 # E denotes sources that use lib and mostly are executables
 # S denotes the otherwise which are mostly sub project
-EDIRS := leetcode test interview system mercenary
+EDIRS := leetcode test interview system mercenary graph
 SDIRS := take-away
 EDIRS := $(addsuffix /,${EDIRS})
 SDIRS := $(addsuffix /,${SDIRS})
@@ -91,7 +91,11 @@ ${1}: %${2}: ${3}
 	${4}
 endef
 
-all: ${LIBCXX} ${LIBC} ${ECXX} ${EC}
+TEST_DIR := test system
+TEST_DATA := $(foreach d,${TEST_DIR},$(wildcard ${d}/*.txt))
+TEST_DATA_DEST := $(addprefix ${OUTDIR}/,${TEST_DATA})
+
+all: ${LIBCXX} ${LIBC} ${ECXX} ${EC} ${TEST_DATA_DEST}
 
 # LIBRARIES
 $(eval $(call MAKELIBRARY,${LIBCXX},${SOEXT},${LIBCXXOBJS},${COMPILE.SO.CXX}))
@@ -115,6 +119,10 @@ endif
 
 %.d: ;
 
+# TEST DATA
+${TEST_DATA_DEST}: ${OUTDIR}/%.txt: %.txt 
+	@cp $^ $@ 
+
 .PRECIOUS: ${ECXXDEP} ${ECDEP} ${ECXXOBJS} ${ECOBJS} \
 			${LIBCXXDEP} ${LIBCDEP} ${LIBCXXOBJS} ${LIBCOBJS}
 
@@ -125,5 +133,6 @@ config:
 clean:
 	@rm out -rf
 
-run: out/$(shell echo ${x} | sed "s,\(.*\)\..*,\1,")
-	@make --silent && $<
+run: out/$(basename ${x})
+	@make --silent 
+	@cd $(dir $<) && ./$(notdir $<)
