@@ -9,7 +9,8 @@
 #include <bits/stdc++.h>
 #include <gtest/gtest.h>
 #include <fstream>
-
+#include <queue>
+#include <stack>
 
 using std::vector;
 using std::list;

@@ -56,6 +56,17 @@
       printf("]\n");              \
    }
 
+#define PRINTF(name, arr, size)    \
+   {                              \
+      printf("%s: [ ", #name);    \
+      int i;                      \
+      for (i = 0; i < size; ++i)  \
+      {                           \
+         printf("%f ", (arr)[i]); \
+      }                           \
+      printf("]\n");              \
+   }
+
 #define PRINTC(name, arr, size)   \
    {                              \
       printf("%s: [ ", #name);    \

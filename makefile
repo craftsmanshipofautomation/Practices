@@ -134,5 +134,4 @@ clean:
 	@rm out -rf
 
 run: out/$(basename ${x})
-	@make --silent 
-	@cd $(dir $<) && ./$(notdir $<)
+	@make --silent  && cd $(dir $<) && ./$(notdir $<)

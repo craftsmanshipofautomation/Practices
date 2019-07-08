@@ -3,6 +3,15 @@
 
 #include <exception>
 
-// currently we don't need any special exceptions
+class Error : std::exception
+{
+  public:
+    Error(const char *msg) : msg_(msg) {}
+    Error(const std::string &msg) : msg_(msg) {}
+    const char *what() { return msg_.c_str(); }
+
+  private:
+    std::string msg_;
+};
 
 #endif
