@@ -44,4 +44,20 @@ TEST(GRAPH, DFS2)
     PrintPath2(&d, 0, 3);
 }
 
+TEST(GRAPH, Dijkstra)
+{
+    Digraph d = EWDRead("tinyEWD.txt");
+    Print(d);
+    Dijkstra(&d, 0);
+    PrintPath(&d, 0, 3);
+}
+
+TEST(GRAPH, Dijkstra2)
+{
+    Digraph d = EWDRead("mediumEWD.txt");
+    Print(d);
+    Dijkstra(&d, 0);
+    PrintPath(&d, 0, 6);
+}
+
 TEST_END

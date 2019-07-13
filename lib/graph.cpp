@@ -77,8 +77,8 @@ void Digraph::Check(int v)
 {
     if (!(v >= 0 && v < vertex_number))
     {
-        string error = string("Error at line ") + to_string(__LINE__) + ": "
-            + "Invalid vertex: " + to_string(v);
+        string error = string("Error at line ") + to_string(__LINE__) + ": " +
+                       "Invalid vertex: " + to_string(v);
         throw Error(error);
     }
 }
@@ -102,10 +102,22 @@ void Digraph::SetPredecessor(int s, int v)
     vertices[s].predecessor = &vertices[v];
 }
 
+void Digraph::SetPredecessor(int s, Vertex *vert)
+{
+    Check(s);
+    vertices[s].predecessor = vert;
+}
+
 std::vector<Edge> Digraph::Adjacent(int v)
 {
     Check(v);
     return adjacency_list[v];
+}
+
+std::vector<Edge> Digraph::Adjacent(Vertex* v)
+{
+    Check(v);
+    return adjacency_list[v->number];
 }
 
 double Digraph::Distance(int v)
@@ -114,10 +126,16 @@ double Digraph::Distance(int v)
     return vertices[v].distance;
 }
 
-Vertex* Digraph::Predecessor(int v)
+Vertex *Digraph::Predecessor(int v)
 {
     Check(v);
     return vertices[v].predecessor;
+}
+
+Vertex* Digraph::V(int s)
+{
+    Check(s);
+    return &vertices[s];
 }
 
 void GRAPH_BFS(Digraph *digraph, int s)
@@ -156,7 +174,6 @@ void PrintPath__(Digraph *digraph, int s, int v)
         PrintPath__(digraph, s, digraph->Predecessor(v)->number);
         cout << " " << v << "(" << digraph->Distance(v) << ")";
     }
-    
 }
 void PrintPath(Digraph *digraph, int s, int v)
 {
@@ -167,17 +184,16 @@ void PrintPath(Digraph *digraph, int s, int v)
 void PrintPath2__(Digraph *digraph, int s, int v)
 {
     if (s == v)
-        cout << " " << s << "(" << digraph->vertices[s].discover_time
-        << "/" << digraph->vertices[s].finishing_time << ")";
+        cout << " " << s << "(" << digraph->vertices[s].discover_time << "/"
+             << digraph->vertices[s].finishing_time << ")";
     else if (digraph->Predecessor(v) == nullptr)
         cout << "no path from " << s << " to " << v << endl;
     else
     {
         PrintPath2__(digraph, s, digraph->Predecessor(v)->number);
-        cout << " " << v << "(" << digraph->vertices[v].discover_time
-        << "/" << digraph->vertices[v].finishing_time << ")";
+        cout << " " << v << "(" << digraph->vertices[v].discover_time << "/"
+             << digraph->vertices[v].finishing_time << ")";
     }
-    
 }
 void PrintPath2(Digraph *digraph, int s, int v)
 {
@@ -185,15 +201,14 @@ void PrintPath2(Digraph *digraph, int s, int v)
     cout << endl;
 }
 
-
-void DFS_VISIT(Digraph* digraph, int s)
+void DFS_VISIT(Digraph *digraph, int s)
 {
     static int time = 0;
     ++time;
-    auto& vertex_s = digraph->vertices[s];
+    auto &vertex_s = digraph->vertices[s];
     vertex_s.discover_time = time;
     digraph->SetColor(s, GraphColor::gray);
-    for (auto& edge : digraph->Adjacent(s))
+    for (auto &edge : digraph->Adjacent(s))
     {
         if (edge.to->color == GraphColor::white)
         {
@@ -203,8 +218,7 @@ void DFS_VISIT(Digraph* digraph, int s)
     }
     digraph->SetColor(s, GraphColor::black);
     ++time;
-    vertex_s.finishing_time = time;    
-    
+    vertex_s.finishing_time = time;
 }
 
 void GRAPH_DFS(Digraph *digraph, int s)
@@ -221,16 +235,16 @@ void GRAPH_DFS_2(Digraph *digraph, int s)
 {
     static int time2 = 0;
     std::stack<int> stack;
-    Vertex* last;
+    Vertex *last;
     stack.push(s);
-    auto& vertex_s = digraph->vertices[s];
+    auto &vertex_s = digraph->vertices[s];
     vertex_s.discover_time = time2;
     while (!stack.empty())
     {
         int u = stack.top();
         stack.pop();
-        digraph->vertices[u].discover_time = time2;        
-        time2 ++;                
+        digraph->vertices[u].discover_time = time2;
+        time2++;
         digraph->SetColor(u, GraphColor::gray);
         if (digraph->vertices[u].callback)
         {
@@ -250,9 +264,43 @@ void GRAPH_DFS_2(Digraph *digraph, int s)
         {
             if (edge.to->color == GraphColor::white)
             {
-                digraph->SetPredecessor(edge.to->number, u);                
+                digraph->SetPredecessor(edge.to->number, u);
                 stack.push(edge.to->number);
             }
         }
     }
 }
+
+void Dijkstra(Digraph *G, int s)
+{
+    auto cmp = [](Vertex* lhs, Vertex* rhs)
+    {
+        cout << lhs->distance << " " <<  rhs->distance << endl;                
+        return lhs->distance < rhs->distance;
+    };
+    std::priority_queue<Vertex*, std::vector<Vertex*>, decltype(cmp)> Q(cmp);
+    Q.push(G->V(s));
+    G->SetColor(s, GraphColor::white);
+    G->SetDistance(s, 0);
+    while (!Q.empty())
+    {
+        auto u = Q.top();
+        Q.pop();
+        u->color = GraphColor::gray;
+        auto edges = G->Adjacent(u);
+        for (auto &edge : edges)
+        {
+            if (G->Color(edge.to) == GraphColor::white)
+            {
+                if (G->Distance(edge.to) > G->Distance(u) + edge.weight)
+                {
+                    G->SetDistance(edge.to, G->Distance(u) + edge.weight);
+                    G->SetPredecessor(edge.to, u);                    
+                    Q.push(edge.to);                    
+                }
+            }
+        }
+        u->color = GraphColor::black;
+    }
+}
+
