@@ -63,7 +63,7 @@ int main()
                         {
                             cout << "client " << i
                                  << " says: " << s->second.str() << endl;
-                            s->second.Write("Greeting\n");
+                            s->second.Write("Greetings\n");
                         }
                     }
                 }

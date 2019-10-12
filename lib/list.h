@@ -23,11 +23,6 @@
 /*@{*/
 
 /**
- * Get offset of a member
- */
-#define offsetof(TYPE, MEMBER) ((size_t) &((TYPE *)0)->MEMBER)
-
-/**
  * Casts a member of a structure out to the containing structure
  * @param ptr        the pointer to the member.
  * @param type       the type of the container struct this is embedded in.
