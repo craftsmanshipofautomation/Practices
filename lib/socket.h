@@ -1,8 +1,6 @@
 #ifndef LIB_SOCKET_H
 #define LIB_SOCKET_H
-#include "csapp.h"
-#include <string>
-#include <memory>
+#include "libcxx.h"
 
 namespace S
 {
@@ -66,7 +64,7 @@ class UDPSocket
   struct sockaddr_in remote_addr_;
   int fd_of_this_socket_;
   socklen_t addrlen_;
-  unsigned char buf_[UDPSocket::bufsize()];
+  unsigned char buf_[2048];
 
 };
 
@@ -75,18 +73,60 @@ namespace S
 // socket utils
 void set_address(const char *host, const char *port, struct sockaddr_in *sap, char* protocol);
 
-class SockAddr
+void print(struct sockaddr_in *si);
+void print_inaddr(struct in_addr*);
+
+class HostInfo
 {
   public:
-  SockAddr(const std::string &host, const std::string& service);
-  
+  HostInfo(const std::string& website);
+  std::vector<std::string>& GetIPv4AddrH();
+  std::vector<std::string>& GetIPv6AddrH();
+  std::vector<struct sockaddr_in>& GetIPv4AddrS();
+  std::vector<struct sockaddr_in6>& GetIPv6AddrS();
+
+
+
   private:
+  bool IsValid() { return valid_;}
+  bool valid_;
+  char ipstr_[INET6_ADDRSTRLEN];
+  std::vector<std::string> ipv4_addrs_;
+  std::vector<std::string> ipv6_addrs_;
+  std::vector<struct sockaddr_in> sockaddrs4_;
+  std::vector<struct sockaddr_in6> sockaddrs6_;
+
+
+
+};
+
+
+// switch from human readable data to library data
+// this is to reveal ugliness
+class SockH2K
+{
+  public:
+  SockH2K(const std::string &host, const std::string& service);
+  struct sockaddr* GetGeneralLibAddr();
+  struct sockaddr_in* GetIPv4LibAddr();
+
+
+
+  private:
+  // use sockaddr* to refer to 2 kinds of address
   struct sockaddr general_addr_;
   struct sockaddr_in ipv4_addr_;
   
   
 };
 
+// from library to human
+class SockK2H
+{
+  public:
+  SockK2H();
+
+};
 
 }
 

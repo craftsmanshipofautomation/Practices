@@ -151,9 +151,9 @@ UDPSocket::UDPSocket(const std::string& addr, const std::string& port)
         throw Error("creation of data gram socket");
     }
     memset(&my_addr_, 0, sizeof(my_addr_));
-    S::set_address(addr.c_str(), port.c_str(), &my_addr_, "udp");
-    ::Bind(fd_of_this_socket_, (struct sockaddr *)&my_addr_, sizeof(my_addr_));
-    addrlen_ = (socklen_t)sizeof(remote_addr_);
+    //S::set_address(addr.c_str(), port.c_str(), &my_addr_, "udp");
+    //::Bind(fd_of_this_socket_, (struct sockaddr *)&my_addr_, sizeof(my_addr_));
+    //addrlen_ = (socklen_t)sizeof(remote_addr_);
 }
 
 std::string UDPSocket::Receive()
@@ -161,7 +161,7 @@ std::string UDPSocket::Receive()
     int recvlen = recvfrom(fd_of_this_socket_, buf_, UDPSocket::bufsize(), 0, \
         (struct sockaddr*)&remote_addr_, &addrlen_);
         
-    return buf_;
+    return "";
 }
 
 std::string UDPSocket::GetRemoteAddr()
@@ -171,17 +171,91 @@ std::string UDPSocket::GetRemoteAddr()
     
 }
 
-std::string UDPSocket::GetRemotePort()
+int UDPSocket::GetRemotePort()
 {
- return  "";   
+ return  0;   
 }
 
 namespace S
 {
 
-SockAddr::SockAddr(const std::string &host, const std::string& service)
+HostInfo::HostInfo(const std::string& website)
+: valid_(true)
 {
-    
+    struct addrinfo hints, *res, *p;
+    int status;
+    memset(&hints, 0, sizeof hints);
+    hints.ai_family = AF_UNSPEC;
+    if ((status = getaddrinfo(website.c_str(), NULL, &hints, &res)) != 0)
+    {
+        valid_ = false;
+    }
+    for (p = res; p != NULL; p = p->ai_next)
+    {
+        void *addr;
+        if (p->ai_family == AF_INET)
+        {
+            struct sockaddr_in s4;
+            struct sockaddr_in *ipv4 = (struct sockaddr_in*)p->ai_addr;
+            addr = &(ipv4->sin_addr);
+            inet_ntop(p->ai_family, addr, ipstr_, sizeof ipstr_);
+            ipv4_addrs_.push_back(ipstr_);
+            memcpy(&s4, ipv4, sizeof(struct sockaddr_in));
+            sockaddrs4_.push_back(std::move(s4));
+        }
+        else
+        {
+            struct sockaddr_in6 s6;
+            struct sockaddr_in6 *ipv6 = (struct sockaddr_in6 *)p->ai_addr;
+            addr = &(ipv6->sin6_addr);
+            inet_ntop(p->ai_family, addr, ipstr_, sizeof ipstr_);
+            ipv6_addrs_.push_back(ipstr_);
+            memcpy(&s6, ipv6, sizeof(struct sockaddr_in6));
+            sockaddrs6_.push_back(std::move(s6));
+        }
+
+    }
+    freeaddrinfo(res);
+
+}
+
+std::vector<std::string>& HostInfo::GetIPv4AddrH()
+{
+    return ipv4_addrs_;
+}
+
+std::vector<std::string>& HostInfo::GetIPv6AddrH()
+{
+    return ipv6_addrs_;
+}
+
+std::vector<struct sockaddr_in>& HostInfo::GetIPv4AddrS()
+{
+    return sockaddrs4_;
+}
+  std::vector<struct sockaddr_in6>& HostInfo::GetIPv6AddrS()
+{
+    return sockaddrs6_;
+
+}
+
+void print(struct sockaddr_in *si)
+{
+    lzlog(si->sin_family, hu);
+    lzlog(si->sin_port, hu);
+    //print_inaddr(&(si->sin_addr.s_addr));
+}
+
+void print_inaddr(struct in_addr* inaddr)
+{
+    char *p = (char*)&inaddr;
+    int i = 0;
+    for (;i < sizeof(struct in_addr); ++i, ++p)
+    {
+        printf("%c, ", *p);
+    }
+    printf("\n");
+
 }
 
 

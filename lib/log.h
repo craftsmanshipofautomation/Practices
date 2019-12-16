@@ -68,7 +68,7 @@
         int i;                                                                 \
         for (i = 0; i < size; ++i)                                             \
         {                                                                      \
-            printf("%d ", (arr)[i]);                                           \
+            printf("%c ", (arr)[i]);                                           \
         }                                                                      \
         printf("]\n");                                                         \
     }
