@@ -73,6 +73,49 @@ std::string Socket::str()
     return std::string(buf_);
 }
 
+
+// to fill sap
+void set_address(char *host, char *service, struct sockaddr_in *sap, char* protocol)
+{
+    struct servent *sp;
+    struct hostent *hp;
+    char *endptr;
+    short port;
+    
+    memset(sap, 0, sizeof(sap));
+    sap->sin_family = AF_INET;
+    if (host != NULL)
+    {
+        if (!inet_aton(host, &sap->sin_addr))
+        {
+            hp = gethostbyname(host);
+            if (hp == NULL)
+                throw Error("gethostbyname");
+            sap->sin_addr = *(struct in_addr*)hp->h_addr;
+        }
+    }
+    else
+    {
+        sap->sin_addr.s_addr = htonl(INADDR_ANY);
+    }
+    port = strtol(service, &endptr, 0);
+    // if this is not the end of it
+    if (*endptr == '\0')
+    {
+        sap->sin_port = htons(port);
+    }
+    else
+    {
+        sp = getservbyname(service, protocol);
+        if (sp == NULL)
+        {
+            throw Error("Unknown service");
+        }
+        sap->sin_port = sp->s_port;
+    }
+    
+}
+
 } // namespace S
 
 LSocket::LSocket(int fd) : lfd_(fd), clientlen_(sizeof(struct sockaddr_storage))
@@ -99,4 +142,50 @@ S::Socket LSocket::Accept()
                 client_port_, MAXLINE, 0);
     return std::move(ret);
 }
+
+UDPSocket::UDPSocket(const std::string& addr, const std::string& port)
+{
+    fd_of_this_socket_ = socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd_of_this_socket_)
+    {
+        throw Error("creation of data gram socket");
+    }
+    memset(&my_addr_, 0, sizeof(my_addr_));
+    S::set_address(addr.c_str(), port.c_str(), &my_addr_, "udp");
+    ::Bind(fd_of_this_socket_, (struct sockaddr *)&my_addr_, sizeof(my_addr_));
+    addrlen_ = (socklen_t)sizeof(remote_addr_);
+}
+
+std::string UDPSocket::Receive()
+{
+    int recvlen = recvfrom(fd_of_this_socket_, buf_, UDPSocket::bufsize(), 0, \
+        (struct sockaddr*)&remote_addr_, &addrlen_);
+        
+    return buf_;
+}
+
+std::string UDPSocket::GetRemoteAddr()
+{
+    //return remote_addr_.sin_addr
+ return  "";   
+    
+}
+
+std::string UDPSocket::GetRemotePort()
+{
+ return  "";   
+}
+
+namespace S
+{
+
+SockAddr::SockAddr(const std::string &host, const std::string& service)
+{
+    
+}
+
+
+
+}
+
 

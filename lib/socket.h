@@ -48,7 +48,49 @@ class LSocket
     char client_port_[MAXLINE];
 };
 
+
+
+class UDPSocket
+{
+  public:
+  // to initialize is to bind
+  UDPSocket(const std::string& addr, const std::string& port);
+  std::string Receive();
+  std::string GetRemoteAddr();
+  int GetRemotePort();
+  void Reply(const std::string&);
+  static constexpr int bufsize() { return 2048; }
+
+  private:
+  struct sockaddr_in my_addr_;
+  struct sockaddr_in remote_addr_;
+  int fd_of_this_socket_;
+  socklen_t addrlen_;
+  unsigned char buf_[UDPSocket::bufsize()];
+
+};
+
+namespace S
+{
+// socket utils
+void set_address(const char *host, const char *port, struct sockaddr_in *sap, char* protocol);
+
+class SockAddr
+{
+  public:
+  SockAddr(const std::string &host, const std::string& service);
+  
+  private:
+  struct sockaddr general_addr_;
+  struct sockaddr_in ipv4_addr_;
+  
+  
+};
+
+
+}
+
 // todo: 
 //  1. rename socket to tcp socket
-//  2. add udp socket
+//  ~~2. add udp socket~~
 #endif
