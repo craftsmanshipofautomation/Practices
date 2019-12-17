@@ -75,13 +75,13 @@ std::string Socket::str()
 
 
 // to fill sap
-void set_address(char *host, char *service, struct sockaddr_in *sap, char* protocol)
+void set_address(const char *host, const char *service, struct sockaddr_in *sap, const char* protocol)
 {
     struct servent *sp;
     struct hostent *hp;
     char *endptr;
     short port;
-    
+
     memset(sap, 0, sizeof(sap));
     sap->sin_family = AF_INET;
     if (host != NULL)
@@ -113,7 +113,7 @@ void set_address(char *host, char *service, struct sockaddr_in *sap, char* proto
         }
         sap->sin_port = sp->s_port;
     }
-    
+
 }
 
 } // namespace S
@@ -146,34 +146,57 @@ S::Socket LSocket::Accept()
 UDPSocket::UDPSocket(const std::string& addr, const std::string& port)
 {
     fd_of_this_socket_ = socket(AF_INET, SOCK_DGRAM, 0);
-    if (fd_of_this_socket_)
+    if (fd_of_this_socket_ == -1)
     {
         throw Error("creation of data gram socket");
     }
     memset(&my_addr_, 0, sizeof(my_addr_));
-    //S::set_address(addr.c_str(), port.c_str(), &my_addr_, "udp");
-    //::Bind(fd_of_this_socket_, (struct sockaddr *)&my_addr_, sizeof(my_addr_));
-    //addrlen_ = (socklen_t)sizeof(remote_addr_);
+    S::set_address(addr.c_str(), port.c_str(), &my_addr_, "udp");
+    ::Bind(fd_of_this_socket_, (struct sockaddr *)&my_addr_, sizeof(my_addr_));
+    addrlen_ = (socklen_t)sizeof(remote_addr_);
+}
+
+UDPSocket::~UDPSocket()
+{
+    close(fd_of_this_socket_);
 }
 
 std::string UDPSocket::Receive()
 {
+    char ipstr[INET6_ADDRSTRLEN];
+    memset(buf_, 0, UDPSocket::bufsize());
     int recvlen = recvfrom(fd_of_this_socket_, buf_, UDPSocket::bufsize(), 0, \
         (struct sockaddr*)&remote_addr_, &addrlen_);
-        
-    return "";
+    if (recvlen == -1)
+    {
+        throw Error("recvfrom");
+    }
+    inet_ntop(remote_addr_.sin_family, (const void*)&(remote_addr_.sin_addr), ipstr, sizeof(ipstr));
+    lastword_ = buf_;
+    last_clntip_ = ipstr;
+    last_clntport_ = remote_addr_.sin_port;
+    return lastword_;
 }
 
-std::string UDPSocket::GetRemoteAddr()
+void UDPSocket::Reply(const std::string& reply)
 {
-    //return remote_addr_.sin_addr
- return  "";   
-    
+    int numbytes = sendto(fd_of_this_socket_, reply.c_str(), reply.size(), 0, \
+        (struct sockaddr*)&remote_addr_, addrlen_);
+    if (numbytes == -1)
+    {
+        throw Error("sendto");
+    }
 }
 
-int UDPSocket::GetRemotePort()
+
+std::string UDPSocket::GetLastRemoteIP()
 {
- return  0;   
+    return last_clntip_;
+}
+
+int UDPSocket::GetLastRemotePort()
+{
+    return last_clntport_;
 }
 
 namespace S
@@ -239,27 +262,23 @@ std::vector<struct sockaddr_in>& HostInfo::GetIPv4AddrS()
 
 }
 
-void print(struct sockaddr_in *si)
-{
-    lzlog(si->sin_family, hu);
-    lzlog(si->sin_port, hu);
-    //print_inaddr(&(si->sin_addr.s_addr));
-}
 
-void print_inaddr(struct in_addr* inaddr)
+
+
+} // namespace S
+
+std::ostream& operator<< (std::ostream&os, struct sockaddr_in si)
 {
-    char *p = (char*)&inaddr;
-    int i = 0;
-    for (;i < sizeof(struct in_addr); ++i, ++p)
+    lzlog(si.sin_family, hu);
+    lzlog(si.sin_port, hu);
+    unsigned char *p = (unsigned char*)(&(si.sin_addr.s_addr));
+    for (int i = 0; i < 4; ++p, ++i)
     {
-        printf("%c, ", *p);
+        int filed = static_cast<int>(*p);
+        lzlog(filed, d);
     }
-    printf("\n");
-
+    return os;
 }
 
-
-
-}
 
 

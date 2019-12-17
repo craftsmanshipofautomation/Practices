@@ -34,6 +34,9 @@ void print(const T& t, bool newline = true);
 template<typename T>
 void print(const T& t, int N, bool newline = true);
 
+
+
+
 // poisonously slow but convinient
 #include "printer.hpp"
 #include "yaalgorithms.hpp"

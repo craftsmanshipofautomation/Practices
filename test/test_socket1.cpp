@@ -12,6 +12,6 @@ int main()
 
     auto saddr4 = hi.GetIPv4AddrS();
     auto saddr6 = hi.GetIPv6AddrS();
-    S::print(saddr4);
+    print(saddr4);
     //print(saddr6);
 }

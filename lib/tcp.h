@@ -12,7 +12,7 @@ class TCPClient
     std::string Read();
 
   private:
-    S::Socket socket_;    
+    S::Socket socket_;
 };
 
 class TCPServer

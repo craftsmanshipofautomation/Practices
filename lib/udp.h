@@ -7,8 +7,10 @@ class UDPServer
 {
     public:
     UDPServer(const std::string& laddr, const std::string port);
-    std::string Receive();
-    void Reply(const std::string &);
+    virtual void Run();
+
+    private:
+    UDPSocket socket_;
 };
 
 
