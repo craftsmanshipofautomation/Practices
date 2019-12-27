@@ -1,5 +1,6 @@
 #include "list.h"
 #include <assert.h>
+#include <stddef.h>
 
 // https://kernelnewbies.org/FAQ/LinkedLists
 
@@ -26,6 +27,12 @@ int main()
     
 
 
-
+    struct list_head *position = NULL ; 
+    struct mystruct  *datastructureptr  = NULL ; 
+    list_for_each ( position , & mylinkedlist ) 
+    { 
+         datastructureptr = list_entry(position, struct mystruct , mylist); 
+         printf("data  =  %d\n" , datastructureptr->data ); 
+    }
 
 }
