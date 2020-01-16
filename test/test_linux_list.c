@@ -1,38 +1,46 @@
 #include "list.h"
 #include <assert.h>
 #include <stddef.h>
+#include "libc.h"
 
 // https://kernelnewbies.org/FAQ/LinkedLists
 
-struct mystruct {
+struct package {
     int data;
-    struct list_head mylist;
+    struct list_head list;
 };
+
+void pkg_init(struct package *pkg, int data)
+{
+    pkg->data = data;
+    INIT_LIST_HEAD(&(pkg->list));
+}
 
 int main() 
 {
-    struct mystruct a = {
-        .data = 1,
-        .mylist = LIST_HEAD_INIT(a.mylist)
-    };
+    struct package a, b;
+    pkg_init(&a, 1);
+    pkg_init(&b, 2);
 
-    struct mystruct b = {
-        .data = 2,
-        .mylist = LIST_HEAD_INIT(b.mylist)
-    };
-    
     LIST_HEAD(mylinkedlist);
-    list_add (&a.mylist, &mylinkedlist);
-    list_add (&b.mylist, &mylinkedlist);
-    
 
+    list_add_tail(&a.list, &mylinkedlist);
+    list_add_tail(&b.list, &mylinkedlist);
 
-    struct list_head *position = NULL ; 
-    struct mystruct  *datastructureptr  = NULL ; 
-    list_for_each ( position , & mylinkedlist ) 
-    { 
-         datastructureptr = list_entry(position, struct mystruct , mylist); 
-         printf("data  =  %d\n" , datastructureptr->data ); 
+    struct package *pkg = NULL ; 
+
+    lzlog("", s);
+    list_for_each_entry(pkg, &mylinkedlist, list)
+    {
+        printf("%d\n", pkg->data);
     }
+
+
+    lzlog("", s);
+    list_for_each_entry_reverse(pkg, &mylinkedlist, list)
+    {
+        printf("%d\n", pkg->data);
+    }
+
 
 }
