@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
-
+#include "strlist.h"
+#include <stddef.h>
 
 void yyerror (char const *s);
 int yylex();
@@ -18,12 +19,13 @@ int yylex();
 %left '-' '+'
 %left '*' '/'
 
-%type <char*> expression
-%type <char*> OP
 
 %%
 
-expression: expression OP expression { }
+expr: expr '+' expr
+    | expr '-' expr
+    | expr '*' expr
+    | expr '/' expr
     | VAR
     ;
 

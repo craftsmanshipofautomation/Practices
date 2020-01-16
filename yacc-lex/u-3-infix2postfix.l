@@ -6,6 +6,15 @@
 
 
 %%
+tgygh
+list
+
+
+
+
+
+
+
 
 [A-Za-z][A-Za-z0-9]* { 
     yylval.str = strdup(yytext);

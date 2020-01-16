@@ -9,7 +9,7 @@ include ./makefiletmpl
 ${execs}: %: %.l %.y
 	bison -y -d -o $@.tab.c $@.y
 	flex -o $@.yy.c $@.l
-	gcc -c $@.tab.c $@.yy.c
+	gcc -c $@.tab.c $@.yy.c ${CFLAGS}
 	gcc $@.tab.o $@.yy.o -o $@ ${CFLAGS}
 
 
@@ -18,5 +18,5 @@ ${execs}: %: %.l %.y
 ${uexecs}: %: %.l %.y
 	bison -y -d -o $@.tab.c $@.y
 	flex -o $@.yy.c $@.l
-	gcc -c $@.tab.c $@.yy.c
+	gcc -c $@.tab.c $@.yy.c ${CFLAGS}
 	gcc $@.tab.o $@.yy.o -o $@ ${CFLAGS} -ll -lm

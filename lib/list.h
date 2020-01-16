@@ -29,11 +29,15 @@
  * @param member     the name of the member within the struct.l
  *
  */
-#define container_of(ptr, type, member) ({                      \
-        const typeof( ((type *)0)->member ) *__mptr = (ptr);    \
-        (type *)( (char *)__mptr - offsetof(type,member) );})
+//#define container_of(ptr, type, member) ({                      \
+//        const typeof( ((type *)0)->member ) *__mptr = (ptr);    \
+//        (type *)( (char *)__mptr - offsetof(type,member) );})
 /*@}*/
 
+
+#define container_of(ptr, type, member) ({				\
+	void *__mptr = (void *)(ptr);					\
+	((type *)(__mptr - offsetof(type, member))); })
 
 /*
  * These are non-NULL pointers that will result in page faults

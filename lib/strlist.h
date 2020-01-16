@@ -2,8 +2,8 @@
 #define STRLIST_H
 
 #include "list.h"
-#include <string.h>
 #include <stddef.h>
+#include <string.h>
 
 
 #define sl_list_for_each_entry(pos, head) list_for_each_entry(pos, head, link)
@@ -21,6 +21,10 @@ static inline void sl_append(struct list_head* head, char * input)
     INIT_LIST_HEAD(&a->link);
     list_add_tail(&a->link, head);
 }
+
+static inline void sl_concat(struct list_head* head1, struct)
+
+
 
 static inline void sl_free(struct list_head* head)
 {
@@ -41,7 +45,7 @@ static inline void sl_free(struct list_head* head)
 static inline void sl_show(struct list_head* head)
 {
     struct strnode *pkg = NULL ;
-    sl_list_for_each_entry(pkg, head)
+    list_for_each_entry(pkg, head, link)
     {
         printf("%s ", pkg->str);
     }

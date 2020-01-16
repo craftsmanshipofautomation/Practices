@@ -1,4 +1,4 @@
-CFLAGS := -I../lib -L$(shell pwd)/../out/lib -Wl,-rpath=$(shell pwd)/../out/lib -l_c
+CFLAGS := -I$(shell pwd)/../lib -L$(shell pwd)/../out/lib -Wl,-rpath=$(shell pwd)/../out/lib -l_c
 
 define write_to_gitignore
 	$(foreach f,${1},$(file >>.gitignore,${f}))
