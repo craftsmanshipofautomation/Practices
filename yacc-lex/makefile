@@ -10,7 +10,7 @@ ${execs}: %: %.l %.y
 	bison -y -d -o $@.tab.c $@.y
 	flex -o $@.yy.c $@.l
 	gcc -c $@.tab.c $@.yy.c
-	gcc $@.tab.o $@.yy.o -o $@
+	gcc $@.tab.o $@.yy.o -o $@ ${CFLAGS}
 
 
 # use u- prefix to denote those that don't override things
@@ -19,4 +19,4 @@ ${uexecs}: %: %.l %.y
 	bison -y -d -o $@.tab.c $@.y
 	flex -o $@.yy.c $@.l
 	gcc -c $@.tab.c $@.yy.c
-	gcc $@.tab.o $@.yy.o -o $@ -ll -lm
+	gcc $@.tab.o $@.yy.o -o $@ ${CFLAGS} -ll -lm
