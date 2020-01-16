@@ -1,0 +1,42 @@
+define write_to_gitignore
+	$(foreach f,${1},$(file >>.gitignore,${f}))
+endef
+
+ls := $(wildcard [^u]*.l)
+ys := $(wildcard [^u]*.y)
+execs = $(patsubst %.l,%,${ls})
+
+yycs := $(addsuffix .yy.c,${execs})
+yyos := $(addsuffix .yy.o,${execs})
+tabcs := $(addsuffix .tab.c,${execs})
+tabos := $(addsuffix .tab.o,${execs})
+tabhs := $(addsuffix .tab.h,${execs})
+
+uls := $(wildcard u*.l)
+uys := $(wildcard u*.y)
+uexecs = $(patsubst %.l,%,${uls})
+
+uyycs := $(addsuffix .yy.c,${uexecs})
+uyyos := $(addsuffix .yy.o,${uexecs})
+utabcs := $(addsuffix .tab.c,${uexecs})
+utabos := $(addsuffix .tab.o,${uexecs})
+utabhs := $(addsuffix .tab.h,${uexecs})
+
+all: ${execs} ${uexecs}
+	$(file >.gitignore,# generated)
+	$(call write_to_gitignore,${execs})
+	$(call write_to_gitignore,${yycs})
+	$(call write_to_gitignore,${yyos})
+	$(call write_to_gitignore,${tabcs})
+	$(call write_to_gitignore,${tabos})
+	$(call write_to_gitignore,${tabhs})
+	$(call write_to_gitignore,${uexecs})
+	$(call write_to_gitignore,${uyycs})
+	$(call write_to_gitignore,${uyyos})
+	$(call write_to_gitignore,${utabcs})
+	$(call write_to_gitignore,${utabos})
+	$(call write_to_gitignore,${utabhs})
+
+clean:
+	rm -f ${execs} ${yycs} ${yyos} ${tabcs} ${tabos} ${tabhs} \
+	${uexecs} ${uyycs} ${uyyos} ${utabcs} ${utabos} ${utabhs}
