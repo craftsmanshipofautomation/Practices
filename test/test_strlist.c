@@ -12,7 +12,16 @@ int main()
     sl_append(&fuck, "efg");
     sl_show(&fuck);
 
+
+    LIST_HEAD(son_of_a_bitch);
+    sl_append(&son_of_a_bitch, "jkl");
+    sl_show(&son_of_a_bitch);
+
+    sl_concat(&fuck, &son_of_a_bitch);
+    sl_show(&fuck);
+
     sl_free(&fuck);
+    //sl_free(&son_of_a_bitch);
 
 }
 

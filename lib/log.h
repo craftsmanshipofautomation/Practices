@@ -40,6 +40,19 @@
         fprintf(stdout, "\n");                                                 \
     } while (0)
 
+#define flog(FORMAT, ...)                                                      \
+    do                                                                         \
+    {                                                                          \
+        fprintf(stdout, Yellow);                                               \
+        fprintf(stdout, "%s:%d ", _##_FILE__, _##_LINE__);                     \
+        fprintf(stdout, Reset);                                                \
+        fprintf(stdout, Cyan);                                                 \
+        fprintf(stdout, " (%s:%d): ", _##_FUNCTION__, _##_LINE__);             \
+        fprintf(stdout, Reset);                                                \
+        fprintf(stdout, FORMAT, __VA_ARGS__);                                  \
+        fprintf(stdout, "\n");                                                 \
+    } while (0)
+
 #define PRINT(name, arr, size)                                                 \
     {                                                                          \
         printf("%s: [ ", #name);                                               \

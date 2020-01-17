@@ -1,33 +1,29 @@
 %{
+#include "strlist.h"
 #include "u-3-infix2postfix.tab.h"
 #include <string.h>
+#include "libc.h"
 %}
 
-
-
 %%
-tgygh
-list
 
-
-
-
-
-
-
-
-[A-Za-z][A-Za-z0-9]* { 
+[A-Za-z0-9]* { 
     yylval.str = strdup(yytext);
     return VAR;
 }
 
-[\-\+\*/] {
+[-|+] {
     yylval.str = strdup(yytext);
-    return OP;
+    return OP1;
 }
 
-[ \t]   ;
+[*|/] {
+    yylval.str = strdup(yytext);
+    return OP2;
+}
 
-\n | .   return yytext[0];
+\n {
+    return 0;
+}
 
 %%
