@@ -3,7 +3,7 @@
 #include "ch3hdr.h"
 #include <math.h>
 
-
+void numform_dump(char*);
 %}
 
 %%
@@ -20,6 +20,17 @@
 }
 
 "$" {return 0;}
-\n  |
-.   return yytext[0];
+\n | .   { numform_dump(yytext); return yytext[0];}
 %%
+
+void numform_dump(char* str)
+{
+    int s = strlen(str);
+    int i;
+    for (i = 0; i < s; ++i)
+    {
+        printf("%d ", str[i]);
+    }
+    printf("\n");
+
+}

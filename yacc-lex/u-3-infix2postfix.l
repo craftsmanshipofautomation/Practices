@@ -12,18 +12,17 @@
     return VAR;
 }
 
-[-|+] {
+[-+] {
     yylval.str = strdup(yytext);
     return OP1;
 }
 
-[*|/] {
+[*/] {
     yylval.str = strdup(yytext);
     return OP2;
 }
 
-\n {
-    return 0;
-}
+\n |
+.   return yytext[0];
 
 %%

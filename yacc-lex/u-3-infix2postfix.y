@@ -31,12 +31,12 @@ int yylex();
 
 %%
 
-statement: expr
+statement: expr '\n'
     { 
         lzlog("statement", s);
         //sl_show(&($1));
     }
-    | statement expr
+    | statement expr '\n'
     {
         lzlog("statement", s);
     }
@@ -62,12 +62,12 @@ expr: expr OP1 expr
         lzlog("op2", s);
         struct list_head lhs = $1, rhs = $3;
         char *op = $2;
-        //sl_show(&lhs);
+        sl_show(&lhs);
         //sl_show(&rhs);
         sl_concat(&lhs, &rhs);
         sl_append(&lhs, op);
         $$ = lhs;
-        //sl_show(&($$));
+        sl_show(&lhs);
         free(op);
     }
     | VAR
@@ -76,7 +76,7 @@ expr: expr OP1 expr
         LIST_HEAD(var);
         sl_append(&var, $1);
         $$ = var;
-        //sl_show(&($$));
+        sl_show(&var);
         free($1);
     }
     ;

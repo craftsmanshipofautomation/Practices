@@ -4,6 +4,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "libc.h"
 void yyerror (char const *s);
 int yylex();
 %}
@@ -24,7 +25,13 @@ int yylex();
 %%
 
 statement_list: statement '\n'
+    {
+        lzlog("statement \n", s);    
+    }
     |   statement_list statement '\n'
+    {
+        lzlog("statement_list statement \n", s);    
+    }
     ;
 
 statement : NAME '=' expression { $1->value = $3; }

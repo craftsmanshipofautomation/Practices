@@ -96,6 +96,7 @@ static inline void sl_free(struct list_head* head)
 static inline void sl_show(struct list_head* head)
 {
     struct strnode *pkg = NULL ;
+    printf("list: ");
     list_for_each_entry(pkg, head, link)
     {
         printf("%s ", pkg->str);
