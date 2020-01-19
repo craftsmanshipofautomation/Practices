@@ -14,6 +14,13 @@ struct strnode {
     struct list_head link;
 };
 
+static inline struct list_head* sl_malloc()
+{
+    struct list_head* new = malloc(sizeof(struct list_head));
+    INIT_LIST_HEAD(new);
+    return new;
+}
+
 static inline void sl_append(struct list_head* head, char * input)
 {
     struct strnode * a = (struct strnode *)malloc(sizeof(struct strnode));
@@ -90,7 +97,7 @@ static inline void sl_free(struct list_head* head)
         free(node);
         curr = next;
     }
-    // don't delete the head
+    free(head);
 }
 
 static inline void sl_show(struct list_head* head)

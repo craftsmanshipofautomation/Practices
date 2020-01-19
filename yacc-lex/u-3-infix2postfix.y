@@ -11,7 +11,7 @@ int yylex();
 
 %}
 %union {
-    struct list_head list;
+    struct list_head* list;
     char *str;
 }
 
@@ -33,25 +33,30 @@ int yylex();
 
 statement: expr '\n'
     { 
-        lzlog("statement", s);
-        //sl_show(&($1));
+        //lzlog("statement", s);
+        sl_show($1);
+        sl_free($1);
     }
     | statement expr '\n'
     {
-        lzlog("statement", s);
+        //lzlog("statement expr", s);
+        sl_show($2);
+        sl_free($2);
     }
     ;
 
 expr: expr OP1 expr 
     {
-        lzlog("op1", s);
-        struct list_head lhs = $1, rhs = $3;
+        //lzlog("op1", s);
+        struct list_head* lhs = $1, *rhs = $3;
         char *op = $2;
-        //sl_show(&lhs);
-        //sl_show(&rhs);
-        sl_concat(&lhs, &rhs);
-        sl_append(&lhs, op);
-        //sl_show(&lhs);
+        int len = sl_length(lhs);
+        //lzlog(len, d);
+        //sl_show(lhs);
+        //sl_show(rhs);
+        sl_concat(lhs, rhs);
+        sl_append(lhs, op);
+        //sl_show(lhs);
         $$ = lhs;
         //sl_show(&($$));
         free(op);
@@ -59,24 +64,24 @@ expr: expr OP1 expr
     }
     | expr OP2 expr
     {
-        lzlog("op2", s);
-        struct list_head lhs = $1, rhs = $3;
+        //lzlog("op2", s);
+        struct list_head* lhs = $1, *rhs = $3;
         char *op = $2;
-        sl_show(&lhs);
-        //sl_show(&rhs);
-        sl_concat(&lhs, &rhs);
-        sl_append(&lhs, op);
+        //sl_show(lhs);
+        //sl_show(rhs);
+        sl_concat(lhs, rhs);
+        sl_append(lhs, op);
         $$ = lhs;
-        sl_show(&lhs);
+        //sl_show(lhs);
         free(op);
     }
     | VAR
     {
-        lzlog($1, s);
-        LIST_HEAD(var);
-        sl_append(&var, $1);
+        //lzlog($1, s);
+        struct list_head* var = sl_malloc();
+        sl_append(var, $1);
         $$ = var;
-        sl_show(&var);
+        //sl_show(var);
         free($1);
     }
     ;
