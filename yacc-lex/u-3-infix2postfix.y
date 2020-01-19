@@ -32,22 +32,22 @@ int yylex();
 %%
 
 statement: expr '\n'
-    { 
-        //lzlog("statement", s);
+    {
+        lzlog("statement", s);
         sl_show($1);
         sl_free($1);
     }
     | statement expr '\n'
     {
-        //lzlog("statement expr", s);
+        lzlog("statement expr", s);
         sl_show($2);
         sl_free($2);
     }
     ;
 
-expr: expr OP1 expr 
+expr: expr OP1 expr
     {
-        //lzlog("op1", s);
+        lzlog("op1", s);
         struct list_head* lhs = $1, *rhs = $3;
         char *op = $2;
         int len = sl_length(lhs);
@@ -64,7 +64,7 @@ expr: expr OP1 expr
     }
     | expr OP2 expr
     {
-        //lzlog("op2", s);
+        lzlog("op2", s);
         struct list_head* lhs = $1, *rhs = $3;
         char *op = $2;
         //sl_show(lhs);
@@ -77,7 +77,7 @@ expr: expr OP1 expr
     }
     | VAR
     {
-        //lzlog($1, s);
+        lzlog($1, s);
         struct list_head* var = sl_malloc();
         sl_append(var, $1);
         $$ = var;

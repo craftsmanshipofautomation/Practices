@@ -1,19 +1,25 @@
 # generated
+u-4
 u-example1
 u-2
 u-3-infix2postfix
+u-4.yy.c
 u-example1.yy.c
 u-2.yy.c
 u-3-infix2postfix.yy.c
+u-4.yy.o
 u-example1.yy.o
 u-2.yy.o
 u-3-infix2postfix.yy.o
+u-4.tab.c
 u-example1.tab.c
 u-2.tab.c
 u-3-infix2postfix.tab.c
+u-4.tab.o
 u-example1.tab.o
 u-2.tab.o
 u-3-infix2postfix.tab.o
+u-4.tab.h
 u-example1.tab.h
 u-2.tab.h
 u-3-infix2postfix.tab.h
