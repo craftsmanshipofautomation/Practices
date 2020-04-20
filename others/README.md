@@ -1,8 +1,6 @@
-# Interview? problems
+# piece of shit
 
-## [2019-05-30](https://github.com/openswords/Practices/tree/master/take-home/2019-05-30)
-
-### Matrix multiplication
+## Matrix multiplication
 
 Please implement the mutiplication of two matrices for the following two cases
 1. each element in the matrix is a complex number(a + bi)
@@ -12,7 +10,7 @@ Please implement the mutiplication of two matrices for the following two cases
 
 You need to design the data structures(complex, triple, matrix, etc) on your own. Use float asthe basic data type in this question.
 
-### Arithmetic expression parsing
+## Arithmetic expression parsing
 
 Please implement an arithmetic expression parser that can evaluate strings like `((1+sin(0))*(3.0+(4*5)))` to `23.0`
 

@@ -27,10 +27,22 @@ int main()
     list_add_tail(&a.list, &mylinkedlist);
     list_add_tail(&b.list, &mylinkedlist);
 
+
+
+
     struct package *pkg = NULL ; 
 
     lzlog("", s);
     list_for_each_entry(pkg, &mylinkedlist, list)
+    {
+        printf("%d\n", pkg->data);
+    }
+
+    LIST_HEAD(mylinkedlist2);
+    mylinkedlist2 = mylinkedlist;
+
+    lzlog("", s);
+    list_for_each_entry(pkg, &mylinkedlist2, list)
     {
         printf("%d\n", pkg->data);
     }
