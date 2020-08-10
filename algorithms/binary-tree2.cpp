@@ -4,12 +4,6 @@
 #include <iostream>
 #include <stack>
 
-enum
-{
-    LHS,
-    RHS
-};
-
 struct Node
 {
     Node(int v) : value(v), left(nullptr), right(nullptr), parent(nullptr) {}
