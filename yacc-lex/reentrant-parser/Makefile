@@ -1,12 +1,12 @@
 all: run
 
-parser.c parser.h: parser.y
+r_parser.c r_parser.h: r_parser.y
 	bison $^
-scanner.c scanner.h: scanner.lex
+r_scanner.c r_scanner.h: r_scanner.lex
 	flex $^
 
-run: main.c parser.c scanner.c
+r: r.c r_parser.c r_scanner.c
 	gcc -$^ -o $@ -g
 
 clean:
-	rm -rf run
+	rm -rf r

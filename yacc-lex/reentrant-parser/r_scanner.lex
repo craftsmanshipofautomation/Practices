@@ -1,17 +1,19 @@
-%option outfile="bw_scanner.c" header-file="bw_scanner.h"
+%option outfile="r_scanner.c" header-file="r_scanner.h"
 %option reentrant
 %option bison-bridge
 %option bison-locations
 %option noinput
 %option nounput
 %option noyywrap
-%option prefix="bw_"
+%option prefix="r_"
 %option yylineno
 %option debug
 
 %{
-#include "bw.h"
-#include "bw_parser.h"
+// 引用 r 接口
+#include "r.h"
+// 引用 yacc 生成的接口
+#include "r_parser.h"
 
 static void update_location(struct location* loc, char* text, unsigned int lineno,
     unsigned int column)
@@ -51,6 +53,15 @@ char  ({digit}|{UONLY}|{GOOD_ASC})
 integer  -?({digit}+)
 
 %%
+
+ip          return IP;
+address     return ADDRESS;
+add         return ADD;
+del         return DEL;
+dev         return DEV_PREDICATOR;
+
+
+
 
 add             return ADD;
 set             return SET;
