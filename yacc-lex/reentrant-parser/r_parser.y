@@ -1,222 +1,101 @@
-%output  "bw_parser.c"
-%defines "bw_parser.h"
+// things to generate
+%output  "r_parser.c"
+%defines "r_parser.h"
 
 %code top{
-#include "bw.h"
+// put this on the top of the generated code
+// use bussiness code
+#include "r.h"
+#include "r_parser.h"
+#include "r_scanner.h"
 
 #ifndef YY_TYPEDEF_YY_SCANNER_T
 #define YY_TYPEDEF_YY_SCANNER_T
 #endif
 
-int bw_error(void *location, struct bw_ctx* bw, void * scanner, struct bw_state* state, const char *msg) {
+// boilerplates that share the same parameters used by yyparse
+int r_error(struct r_ctx* bw, void * scanner, const char *msg) {
     (void)bw;
     (void)scanner;
-    (void)state;
-    struct location * loc = (struct location*)location;
-    ez_debug("[%s]:%d:%d:%s\n",
-        msg, loc->first_line, loc->first_column,
-        loc->token);
+    (void)msg;
     return 0;
 }
 
-extern int bw_lex(void*, void*, void*);
-extern int bw_lex_init(void*);
-extern void bw_set_debug(int, void*);
-
-static void location_init(void *loc)
-{
-    memset(loc, 0, sizeof(struct location));
-}
+// implemented somewhere
+extern int r_lex(void*, void*);
+extern int r_lex_init(void*);
+extern void r_set_debug(int, void*);
+extern void scanner_destroy(void *scanner);
+extern void scanner_push_buffer(void *scanner, const char *buffer);
 
 }
 
 %initial-action {
-    location_init(&yylloc);
 }
 
-%name-prefix "bw_"
+%define api.prefix {r_}
 %define api.pure full
 %lex-param   { scanner }
-%parse-param { struct bw_ctx* bw }
+%parse-param { struct r_ctx* ctx }
 %parse-param { void * scanner }
-%parse-param { struct bw_state * state }
-%locations
 %debug
 
 %union {
     char* str;
-    struct bw_optpair *pair;
-    struct list_head* list;
-    struct bwrule* rule;
     int number;
 }
 
-%token ADD SET MOVE DEL CLEAR CHECK STARTUP DOWNLOAD REFRESH HELP DYNAMIC VERSION S
-%token FAMILY NAME SRCIP DSTIP IIF OIF F
-%token TIME QOS SERVICE BANDWIDTH HOST FORWARD BACKWARD
-%token ACTIVE COMMENT ALL ID NEWID
-
+// specific tokens to be use
+%token IP ADDRESS_LITERARY ADD DEL DEV
+// declare some tokens' type
 %token <str> STRING
 %token <number> NUMBER
-%type <list> properties
-%type <pair> pair
-%type <number> number_keyword  string_keyword loner
-%type <number> operation intransive_verb triple double
-
+// declare non-terminals' type
 
 %%
 
-bw: {
-        state->error = -1;
-    }
-    | operation properties
+IPADDRCMD :
     {
-        struct bwrule* rule = bwrule_new();
-        bwrule_init(rule, $2);
-        state->rule = rule;
-        state->op = $1;
+        ctx->error = -1;
     }
-    | intransive_verb {
-        struct bwrule* rule = bwrule_new();
-        state->rule = rule;
-        state->op = $1;
+    | HEADER OPERATION ADDRESS DEVICE
+    {
+        ctx->error = 0;
     }
-    | triple NUMBER NUMBER {
-        struct bwrule* rule = bwrule_new();
-        state->rule = rule;
-        state->op = $1;
-        state->_1 = $2;
-        state->_2 = $3;
-    }
-    | double STRING {
-        struct bwrule* rule = bwrule_new();
-        state->rule = rule;
-        state->op = $1;
-        state->_3 = $2;
-    }
-    | unrecognized {
-        state->error = -1;
+    | UNRECOGNIZED {
+        ctx->error = -1;
     }
     ;
 
-operation: ADD {
-        $$ = BWADD;
+HEADER: IP ADDRESS_LITERARY
+    ;
+
+DEVICE: DEV STRING
+    {
+        ctx->dev = $2;
     }
-    | SET {
-        $$ = BWSET;
-    }
-    | MOVE {
-        $$ = BWMOVE;
+    ;
+
+OPERATION: ADD {
+        ctx->op = RADD;
     }
     | DEL {
-        $$ = BWDEL;
+        ctx->op = RDEL;
     }
     ;
 
-intransive_verb: STARTUP {
-        $$ = BWSTARTUP;
-    }
-    | CLEAR {
-        $$ = BWCLEAR;
-    }
-    | CHECK {
-        $$ = BWCHECK;
-    }
-    | REFRESH {
-        $$ = BWREFRESH;
-    }
-    | HELP {
-        $$ = BWHELP;
-    }
-    | DOWNLOAD {
-        $$ = BWDOWNLOAD;
-    }
-    | VERSION {
-        $$ = BWVERSION;
-    }
-    | S {
-        $$ = BWCONNTRACKMODULERELOAD;
+ADDRESS: STRING
+    {
+        ctx->addr = $1;
     }
     ;
 
-triple: DYNAMIC {
-        $$ = BWDYNAMIC;
-    }
-    ;
-
-double: F {
-        $$ = BWF;
-    }
-    ;
-
-unrecognized : NUMBER
+UNRECOGNIZED : NUMBER
     |   STRING
-    | unrecognized unrecognized
+    | UNRECOGNIZED UNRECOGNIZED
     ;
 
-properties: pair
-    {
-        $$ = xmalloc(sizeof(*$$));
-        INIT_LIST_HEAD($$);
-        list_add_tail(&($1->list), $$);
-    }
-    | properties pair
-    {
-        $$ = $1;
-        list_add_tail(&($2->list), $$);
-    }
-    ;
 
-pair: string_keyword STRING
-    {
-        $$ = bw_optpair_new_from_string($1, $2);
-        ez_debug("[1] %d: %s\n", $1, $2);
-    }
-    | string_keyword NUMBER
-    {
-        char buf[256];
-        char* p;
-        ZEROIZE(buf);
-        snprintf(buf, sizeof(buf), "%d", $2);
-        p = strdup(buf);
-        $$ = bw_optpair_new_from_string($1, p);
-        ez_debug("[1] %d: %s\n", $1, p);
-    }
-    | number_keyword NUMBER
-    {
-        $$ = bw_optpair_new_from_number($1, $2);
-        ez_debug("[2] %d: %d\n", $1, $2);
-    }
-    | loner
-    {
-        $$ = bw_optpair_new_from_number($1, 1);
-        ez_debug("[3] %d: %d\n", $1, 1);
-    }
-    ;
-
-string_keyword: NAME { $$ = BWOPT_NAME; }
-    | SRCIP { $$ = BWOPT_SRCIP; }
-    | DSTIP { $$ = BWOPT_DSTIP; }
-    | IIF { $$ = BWOPT_IIF; }
-    | OIF { $$ = BWOPT_OIF; }
-    | TIME { $$ = BWOPT_TIME; }
-    | SERVICE { $$ = BWOPT_SERVICE; }
-    | BANDWIDTH { $$ = BWOPT_BANDWIDTH; }
-    | COMMENT { $$ = BWOPT_COMMENT; }
-    ;
-
-number_keyword: FAMILY { $$ = BWOPT_FAMILY; }
-    | QOS { $$ = BWOPT_QOS;}
-    | HOST { $$ = BWOPT_HOST; }
-    | ACTIVE { $$ = BWOPT_ACTIVE; }
-    | FORWARD { $$ = BWOPT_FORWARD; }
-    | BACKWARD { $$ = BWOPT_BACKWARD; }
-    | ID { $$ = BWOPT_ID; }
-    | NEWID {$$ = BWOPT_NEWID; }
-    ;
-
-loner: ALL { $$ = BWOPT_ALL; }
-    ;
 
 %%
 
