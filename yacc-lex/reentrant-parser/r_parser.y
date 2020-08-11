@@ -14,7 +14,7 @@
 #endif
 
 /* boilerplates that share the same parameters used by yyparse */
-int yyerror(struct r_ctx* bw, void * scanner, const char *msg) {
+int r_error(struct r_ctx* bw, void * scanner, const char *msg) {
     (void)bw;
     (void)scanner;
     (void)msg;
@@ -26,7 +26,9 @@ int yyerror(struct r_ctx* bw, void * scanner, const char *msg) {
 %initial-action {
 }
 
+// don't use apt.prefix
 //%define api.prefix {r_}
+%name-prefix "r_"
 %define api.pure full
 %lex-param   { scanner }
 %parse-param { struct r_ctx* ctx }

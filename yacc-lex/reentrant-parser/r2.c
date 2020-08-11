@@ -23,7 +23,7 @@ void r_ctx_delete(struct r_ctx* ctx)
 void * scanner_init(void)
 {
     void *scanner;
-    yylex_init(&scanner);
+    r_lex_init(&scanner);
     return scanner;
 }
 
@@ -32,7 +32,7 @@ int r_run_cmd_from_buffer(struct r_ctx* ctx, char* buf)
     const char* s;
 
     scanner_push_buffer(ctx->scanner, buf);
-    yyparse(ctx, ctx->scanner);
+    r_parse(ctx, ctx->scanner);
 
 
     if (ctx->error)

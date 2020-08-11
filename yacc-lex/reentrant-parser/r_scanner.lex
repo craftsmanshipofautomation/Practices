@@ -5,7 +5,7 @@
 %option noinput
 %option nounput
 %option noyywrap
-/*%option prefix="r_"*/
+%option prefix="r_"
 %option yylineno
 %option debug
 
