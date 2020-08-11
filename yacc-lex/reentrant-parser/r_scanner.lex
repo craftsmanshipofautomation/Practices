@@ -2,11 +2,10 @@
 %option outfile="r_scanner.c" header-file="r_scanner.h"
 %option reentrant
 %option bison-bridge
-%option bison-locations
 %option noinput
 %option nounput
 %option noyywrap
-%option prefix="r_"
+/*%option prefix="r_"*/
 %option yylineno
 %option debug
 
@@ -24,15 +23,14 @@ char        ({digit}|{alpha})+
 
 %%
 
-ip              return IP;
-address         return ADDRESS;
+address         return IPCMDTYPE;
+addr            return IPCMDTYPE;
 add             return ADD;
 del             return DEL;
 dev             return DEV;
-{digit}{1,3}\.{digit}{1,3}\.{digit}{1,3}\.{digit}{1,3}\/{digit}{1,2}
-                {
+{digit}{1,3}\.{digit}{1,3}\.{digit}{1,3}\.{digit}{1,3}\/{digit}{1,2} {
                     yylval->str = strdup(yytext);
-                    return STRING;
+                    return ADDRESS_STRING;
                 }
 {char}+         {
                     yylval->str = strdup(yytext);

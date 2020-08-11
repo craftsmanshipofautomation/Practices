@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.5.1.  */
+/* A Bison parser, made by GNU Bison 3.4.1.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2020 Free Software Foundation,
+   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2019 Free Software Foundation,
    Inc.
 
    This program is free software: you can redistribute it and/or modify
@@ -34,58 +34,50 @@
 /* Undocumented macros, especially those whose name start with YY_,
    are private implementation details.  Do not rely on them.  */
 
-#ifndef YY_R_R_PARSER_H_INCLUDED
-# define YY_R_R_PARSER_H_INCLUDED
+#ifndef YY_YY_R_PARSER_H_INCLUDED
+# define YY_YY_R_PARSER_H_INCLUDED
 /* Debug traces.  */
-#ifndef R_DEBUG
-# if defined YYDEBUG
+#ifndef YYDEBUG
+# define YYDEBUG 1
+#endif
 #if YYDEBUG
-#   define R_DEBUG 1
-#  else
-#   define R_DEBUG 0
-#  endif
-# else /* ! defined YYDEBUG */
-#  define R_DEBUG 1
-# endif /* ! defined YYDEBUG */
-#endif  /* ! defined R_DEBUG */
-#if R_DEBUG
-extern int r_debug;
+extern int yydebug;
 #endif
 
 /* Token type.  */
-#ifndef R_TOKENTYPE
-# define R_TOKENTYPE
-  enum r_tokentype
+#ifndef YYTOKENTYPE
+# define YYTOKENTYPE
+  enum yytokentype
   {
-    IP = 258,
-    ADDRESS_LITERARY = 259,
-    ADD = 260,
-    DEL = 261,
-    DEV = 262,
-    STRING = 263,
+    ADD = 258,
+    DEL = 259,
+    DEV = 260,
+    STRING = 261,
+    IPCMDTYPE = 262,
+    ADDRESS_STRING = 263,
     NUMBER = 264
   };
 #endif
 
 /* Value type.  */
-#if ! defined R_STYPE && ! defined R_STYPE_IS_DECLARED
-union R_STYPE
+#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
+union YYSTYPE
 {
-#line 43 "r_parser.y"
+#line 36 "r_parser.y"
 
     char* str;
     int number;
 
-#line 80 "r_parser.h"
+#line 72 "r_parser.h"
 
 };
-typedef union R_STYPE R_STYPE;
-# define R_STYPE_IS_TRIVIAL 1
-# define R_STYPE_IS_DECLARED 1
+typedef union YYSTYPE YYSTYPE;
+# define YYSTYPE_IS_TRIVIAL 1
+# define YYSTYPE_IS_DECLARED 1
 #endif
 
 
 
-int r_parse (struct r_ctx* ctx, void * scanner);
+int yyparse (struct r_ctx* ctx, void * scanner);
 
-#endif /* !YY_R_R_PARSER_H_INCLUDED  */
+#endif /* !YY_YY_R_PARSER_H_INCLUDED  */

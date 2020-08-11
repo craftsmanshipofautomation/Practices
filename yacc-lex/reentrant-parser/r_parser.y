@@ -1,10 +1,10 @@
-// things to generate
+/* things to generate */
 %output  "r_parser.c"
 %defines "r_parser.h"
 
 %code top{
-// put this on the top of the generated code
-// use bussiness code
+/* put this on the top of the generated code */
+/* use bussiness code */
 #include "r.h"
 #include "r_parser.h"
 #include "r_scanner.h"
@@ -13,27 +13,20 @@
 #define YY_TYPEDEF_YY_SCANNER_T
 #endif
 
-// boilerplates that share the same parameters used by yyparse
-int r_error(struct r_ctx* bw, void * scanner, const char *msg) {
+/* boilerplates that share the same parameters used by yyparse */
+int yyerror(struct r_ctx* bw, void * scanner, const char *msg) {
     (void)bw;
     (void)scanner;
     (void)msg;
     return 0;
 }
 
-// implemented somewhere
-extern int r_lex(void*, void*);
-extern int r_lex_init(void*);
-extern void r_set_debug(int, void*);
-extern void scanner_destroy(void *scanner);
-extern void scanner_push_buffer(void *scanner, const char *buffer);
-
 }
 
 %initial-action {
 }
 
-%define api.prefix {r_}
+//%define api.prefix {r_}
 %define api.pure full
 %lex-param   { scanner }
 %parse-param { struct r_ctx* ctx }
@@ -45,12 +38,12 @@ extern void scanner_push_buffer(void *scanner, const char *buffer);
     int number;
 }
 
-// specific tokens to be use
-%token IP ADDRESS_LITERARY ADD DEL DEV
-// declare some tokens' type
-%token <str> STRING
+/* specific tokens to be use    */
+%token ADD DEL DEV
+/* declare some tokens' type    */
+%token <str> STRING IPCMDTYPE ADDRESS_STRING
 %token <number> NUMBER
-// declare non-terminals' type
+/* declare non-terminals' type  */
 
 %%
 
@@ -62,12 +55,9 @@ IPADDRCMD :
     {
         ctx->error = 0;
     }
-    | UNRECOGNIZED {
-        ctx->error = -1;
-    }
     ;
 
-HEADER: IP ADDRESS_LITERARY
+HEADER: IPCMDTYPE
     ;
 
 DEVICE: DEV STRING
@@ -84,18 +74,11 @@ OPERATION: ADD {
     }
     ;
 
-ADDRESS: STRING
+ADDRESS: ADDRESS_STRING
     {
         ctx->addr = $1;
     }
     ;
-
-UNRECOGNIZED : NUMBER
-    |   STRING
-    | UNRECOGNIZED UNRECOGNIZED
-    ;
-
-
 
 %%
 
