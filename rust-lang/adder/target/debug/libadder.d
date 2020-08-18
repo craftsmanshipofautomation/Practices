@@ -1,0 +1,1 @@
+/home/root_/Workspace/Practices/rust-lang/adder/target/debug/libadder.rlib: /home/root_/Workspace/Practices/rust-lang/adder/src/front_of_house/hosting.rs /home/root_/Workspace/Practices/rust-lang/adder/src/front_of_house.rs /home/root_/Workspace/Practices/rust-lang/adder/src/lib.rs
