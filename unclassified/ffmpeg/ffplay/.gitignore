@@ -1,0 +1,4 @@
+*.pgm
+*.out
+_build
+fflib/*

@@ -1,0 +1,20 @@
+project(c)
+
+set(LANGUAGE C)
+
+file(GLOB C_SRCS ${PROJECT_SOURCE_DIR}/*.c)
+message(STATUS ${C_SRCS})
+set(c_bins ${c_bins})
+foreach(src ${C_SRCS})
+    string(REGEX REPLACE "${PROJECT_SOURCE_DIR}/" "" _src ${src})
+    string(REGEX REPLACE ".c" "" exe ${_src})
+    set(c_bins ${exe} ${c_bins})
+    message(STATUS ${exe})
+endforeach(src)
+
+set(libs ff)
+foreach(exe ${c_bins})
+    message(STATUS "[exe]: " ${exe})
+    add_executable(${exe} ${exe}.c)
+    TARGET_LINK_LIBRARIES(${exe} ${libs})
+endforeach(exe)

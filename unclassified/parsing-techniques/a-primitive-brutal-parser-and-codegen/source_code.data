@@ -1,0 +1,1037 @@
+public class AttributeFactory {
+
+	public static Attribute makeVignetteFilterAttrs(PointF center, float start, float end) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kVignetteFilterRender);
+		attrs.putPointF("center", center);
+		attrs.putFloat("start", start);
+		attrs.putFloat("end", end);
+		
+		return attrs;
+	}
+	
+	public static Attribute makeLomoFilterAttrs(String tex3path, String tex4path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kLomoFilterRender);
+		attrs.putString("tex3path", tex3path);
+		attrs.putString("tex4path", tex4path);
+		
+		return attrs;
+	}
+	
+	public static Attribute makeSwirlFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kSwirlFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeAmatorkaFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kAmatorkaFilterRender);
+		attrs.putString("tex2path", tex2path);
+		
+		return attrs;
+	}
+	
+	public static Attribute makeNoneFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kNoneFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeColorFilterAttrs(Color4F color) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kColorFilterRender);
+		attrs.putColor4F("color", color);
+		return attrs;
+	}
+	
+	public static Attribute makeAddBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kAddBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		
+		return attrs;
+	}
+	
+	public static Attribute makeAlphaBlendFilterAttrs(String tex2path, float mix) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kAlphaBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		attrs.putFloat("mix", mix);
+		
+		return attrs;
+	}
+	
+	public static Attribute makeBulgeDistortionFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kBulgeDistortionFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeGlassSphereFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kGlassSphereFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeBrightnessFilterAttrs(float brightness) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kBrightnessFilterRender);
+		attrs.putFloat("brightness", brightness);
+		return attrs;
+	}
+	
+	public static Attribute makeCGAColorspaceFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kCGAColorspaceFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeColorBalanceFilterAttrs(float[] shadows, float midtones[], float[] highlights) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kColorBalanceFilterRender);
+		attrs.putFloatArray("shadows", shadows);
+		attrs.putFloatArray("midtones", midtones);
+		attrs.putFloatArray("highlights", highlights);
+		return attrs;	
+	}
+	
+	public static Attribute makeColorInvertFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kColorInvertFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeContrastFilterAttrs(float contrast) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kContrastFilterRender);
+		attrs.putFloat("contrast", contrast);
+		return attrs;
+	}
+	
+	public static Attribute makeCrosshatchFilterAttrs(float cross_hatch_spacing, float line_width) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kCrosshatchFilterRender);
+		attrs.putFloat("cross_hatch_spacing", cross_hatch_spacing);
+		attrs.putFloat("line_width", line_width);
+		return attrs;
+	}
+	
+	public static Attribute makeExposureFilterAttrs(float exposure) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kExposureFilterRender);
+		attrs.putFloat("exposure", exposure);
+		return attrs;
+	}
+	
+	public static Attribute makeFalseColorFilterAttrs(float first_color[], float second_color[]) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kFalseColorFilterRender);
+		attrs.putFloatArray("first_color", first_color);
+		attrs.putFloatArray("second_color", second_color);
+		return attrs;
+	}
+	
+	public static Attribute makeGammaFilterAttrs(float gamma) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kGammaFilterRender);
+		attrs.putFloat("gamma", gamma);
+		return attrs;
+	}
+	
+	public static Attribute makeGrayscaleFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kGrayscaleFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeHazeFilterAttrs(float distance, float slope) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kHazeFilterRender);
+		attrs.putFloat("distance", distance);
+		attrs.putFloat("slope", slope);
+		return attrs;
+	}
+	
+	public static Attribute makeHighlightShadowFilterAttrs(float shadow, float highlight) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kHighlightShadowFilterRender);
+		attrs.putFloat("shadow", shadow);
+		attrs.putFloat("highlight", highlight);
+		return attrs;
+	}
+	
+	public static Attribute makeHueFilterAttrs(int hue) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kHueFilterRender);
+		attrs.putInt("hue", hue);
+		return attrs;
+	}
+	
+	public static Attribute makeKuwaharaFilterAttrs(int radius) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kHueFilterRender);
+		attrs.putInt("radius", radius);
+		return attrs;
+	}
+	
+	public static Attribute makeMonochromeFilterAttrs(float intensity, Color4F color) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kMonochromeFilterRender);
+		attrs.putFloat("intensity", intensity);
+		attrs.putColor4F("color", color);
+		return attrs;
+	}
+	
+	public static Attribute makeOpacityFilterAttrs(float opacity) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kOpacityFilterRender);
+		attrs.putFloat("opacity", opacity);
+		return attrs;
+	}
+	
+	public static Attribute makePixelationFilterAttrs(float pixel) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kPixelationFilterRender);
+		attrs.putFloat("pixel", pixel);
+		return attrs;
+	}
+	
+	public static Attribute makePosterizeFilterAttrs(int color_level) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kPosterizeFilterRender);
+		attrs.putFloat("color_level", color_level);
+		return attrs;
+	}
+	
+	public static Attribute makeRGBFilterAttrs(float red, float green, float blue) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kRGBFilterRender);
+		attrs.putFloat("red", red);
+		attrs.putFloat("green", green);
+		attrs.putFloat("blue", blue);
+		return attrs;
+	}
+	
+	public static Attribute makeSaturationFilterAttrs(float saturation) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kSaturationFilterRender);
+		attrs.putFloat("saturation", saturation);
+		return attrs;
+	}
+	
+	public static Attribute makeSharpenFilterAttrs(float sharpness) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kSharpenFilterRender);
+		attrs.putFloat("saturation", sharpness);
+		return attrs;
+	}
+	
+	public static Attribute makeWhiteBalanceFilterAttrs(float temperature, float tint ) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kWhiteBalanceFilterRender);
+		attrs.putFloat("temperature", temperature);
+		attrs.putFloat("tint", tint);
+		return attrs;
+	}
+	
+	public static Attribute makeSphereRefractionFilterAttrs(float radius, float aspect_ratio, float refractive_index, PointF center) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kSphereRefractionFilterRender);
+		attrs.putFloat("radius", radius);
+		attrs.putFloat("aspect_ratio", aspect_ratio);
+		attrs.putFloat("refractive_index", refractive_index);
+		attrs.putPointF("center", center);
+		return attrs;
+	}
+	
+	public static Attribute makeThreeXThreeTextureSamplingFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kThreeXThreeTextureSamplingFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeDirectionalSobelEdgeDetectionFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kDirectionalSobelEdgeDetectionFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeLaplacianFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kLaplacianFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeNonMaximumSuppressionFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kNonMaximumSuppressionFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeSobelThresholdFilterAttrs(float threshold) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kSobelThresholdFilterRender);
+		attrs.putFloat("threshold", threshold);
+		return attrs;
+	}
+	
+	public static Attribute makeThreeXThreeConvolutionFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kThreeXThreeConvolutionFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeToonFilterAttrs(float threshold, float quantization_level) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kToonFilterRender);
+		attrs.putFloat("threshold", threshold);
+		attrs.putFloat("quantization_level", quantization_level);
+		return attrs;
+	}
+	
+	public static Attribute makeWeakPixelInclusionFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kWeakPixelInclusionFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeChromaKeyBlendFilterAttrs(String tex2path, float smoothing, float threshold_sensitivity, Color4F color) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kChromaKeyBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		attrs.putFloat("smoothing", smoothing);
+		attrs.putFloat("threshold_sensitivity", threshold_sensitivity);
+		attrs.putColor4F("color", color);
+		return attrs;
+	}
+	
+	public static Attribute makeColorBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kColorBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeColorBurnBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kColorBurnBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeColorDodgeBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kColorDodgeBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeDarkenBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kDarkenBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeDivideBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kDivideBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeExclusionBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kExclusionBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeHardLightBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kHardLightBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeHueBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kHueBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeLightenBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kLightenBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeLinearBurnBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kLinearBurnBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeLookupFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kLookupFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeLuminosityBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kLuminosityBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeMixBlendFilterAttrs(String tex2path, float mix) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kMixBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		attrs.putFloat("mix", mix);
+		return attrs;
+	}
+	
+	public static Attribute makeDissolveBlendFilterAttrs(String tex2path, float mix) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kDissolveBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		attrs.putFloat("mix", mix);
+		return attrs;
+	}
+	
+	public static Attribute makeMultiplyBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kMultiplyBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeNormalBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kNormalBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeOverlayBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kOverlayBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeSaturationBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kSaturationBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeScreenBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kScreenBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeSoftLightBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kSoftLightBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeSourceOverBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kSourceOverBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeSubtractBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kSubtractBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeDifferenceBlendFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kDifferenceBlendFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeSepiaFilterAttrs(float intensity) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kSepiaFilterRender);
+		attrs.putFloat("intensity", intensity);
+		return attrs;
+	}
+	
+	public static Attribute makeColorMatrixFilterAttrs(float intensity) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kColorMatrixFilterRender);
+		attrs.putFloat("intensity", intensity);
+		return attrs;
+	}
+	
+	public static Attribute makeRGBDilationFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kRGBDilationFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeBoxBlurFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kBoxBlurFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeGaussianBlurFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kGaussianBlurFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeDilationFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kDilationFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeSmoothToonFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kSmoothToonFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeSobelEdgeDetectionFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kSobelEdgeDetectionFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeThresholdEdgeDetectionFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kThresholdEdgeDetectionFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeSketchFilterAttrs() {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kSketchFilterRender);
+		return attrs;
+	}
+	
+	public static Attribute makeIF1977FilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kIF1977FilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeIFAmaroFilterAttrs(String tex2path, String tex3path, String tex4path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kIFAmaroFilterRender);
+		attrs.putString("tex2path", tex2path);
+		attrs.putString("tex3path", tex3path);
+		attrs.putString("tex4path", tex4path);
+		return attrs;
+	}
+	
+	public static Attribute makeIFBrannanFilterAttrs(String tex2path, String tex3path, String tex4path, String tex5path, String tex6path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kIFBrannanFilterRender);
+		attrs.putString("tex2path", tex2path);
+		attrs.putString("tex3path", tex3path);
+		attrs.putString("tex4path", tex4path);
+		attrs.putString("tex5path", tex5path);
+		attrs.putString("tex6path", tex6path);
+		return attrs;
+	}
+	
+	
+	public static Attribute makeIFEarlybirdFilterAttrs(String tex2path, String tex3path, String tex4path, String tex5path, String tex6path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kIFEarlybirdFilterRender);
+		attrs.putString("tex2path", tex2path);
+		attrs.putString("tex3path", tex3path);
+		attrs.putString("tex4path", tex4path);
+		attrs.putString("tex5path", tex5path);
+		attrs.putString("tex6path", tex6path);
+		return attrs;
+	}
+	
+	public static Attribute makeIFHefeFilterAttrs(String tex2path, String tex3path, String tex4path, String tex5path, String tex6path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kIFHefeFilterRender);
+		attrs.putString("tex2path", tex2path);
+		attrs.putString("tex3path", tex3path);
+		attrs.putString("tex4path", tex4path);
+		attrs.putString("tex5path", tex5path);
+		attrs.putString("tex6path", tex6path);
+		return attrs;
+	}
+	
+	public static Attribute makeIFHudsonFilterAttrs(String tex2path, String tex3path, String tex4path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kIFHudsonFilterRender);
+		attrs.putString("tex2path", tex2path);
+		attrs.putString("tex3path", tex3path);
+		attrs.putString("tex4path", tex4path);
+		return attrs;
+	}
+	
+	public static Attribute makeIFInkwellFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kIFInkwellFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeIFLomoFilterAttrs(String tex2path, String tex3path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kIFLomoFilterRender);
+		attrs.putString("tex2path", tex2path);
+		attrs.putString("tex3path", tex3path);
+		return attrs;
+	}
+	
+	public static Attribute makeIFLordKelvinFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kIFLordKelvinFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeIFNashvilleFilterAttrs(String tex2path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kIFNashvilleFilterRender);
+		attrs.putString("tex2path", tex2path);
+		return attrs;
+	}
+	
+	public static Attribute makeIFRiseFilterAttrs(String tex2path, String tex3path, String tex4path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kIFRiseFilterRender);
+		attrs.putString("tex2path", tex2path);
+		attrs.putString("tex3path", tex3path);
+		attrs.putString("tex4path", tex4path);
+		return attrs;
+	}
+	
+	public static Attribute makeIFSierraFilterAttrs(String tex2path, String tex3path, String tex4path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kIFSierraFilterRender);
+		attrs.putString("tex2path", tex2path);
+		attrs.putString("tex3path", tex3path);
+		attrs.putString("tex4path", tex4path);
+		return attrs;
+	}
+	
+	public static Attribute makeIFSutroFilterAttrs(String tex2path, String tex3path, String tex4path, String tex5path, String tex6path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kIFSutroFilterRender);
+		attrs.putString("tex2path", tex2path);
+		attrs.putString("tex3path", tex3path);
+		attrs.putString("tex4path", tex4path);
+		attrs.putString("tex5path", tex5path);
+		attrs.putString("tex6path", tex6path);
+		return attrs;
+	}
+	
+	public static Attribute makeIFToasterFilterAttrs(String tex2path, String tex3path, String tex4path, String tex5path, String tex6path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kIFToasterFilterRender);
+		attrs.putString("tex2path", tex2path);
+		attrs.putString("tex3path", tex3path);
+		attrs.putString("tex4path", tex4path);
+		attrs.putString("tex5path", tex5path);
+		attrs.putString("tex6path", tex6path);
+		return attrs;
+	}
+	
+	public static Attribute makeIFValenciaFilterAttrs(String tex2path, String tex3path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kIFValenciaFilterRender);
+		attrs.putString("tex2path", tex2path);
+		attrs.putString("tex3path", tex3path);
+		return attrs;
+	}
+	
+	public static Attribute makeIFWaldenFilterAttrs(String tex2path, String tex3path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kIFWaldenFilterRender);
+		attrs.putString("tex2path", tex2path);
+		attrs.putString("tex3path", tex3path);
+		return attrs;
+	}
+	
+	public static Attribute makeIFXprollFilterAttrs(String tex2path, String tex3path) {
+		Attribute attrs = new Attribute();
+		attrs.putInt("type", Effect.Filter.kIFXprollFilterRender);
+		attrs.putString("tex2path", tex2path);
+		attrs.putString("tex3path", tex3path);
+		return attrs;
+	}
+	
+	public static Attribute makeFilterAttrsByType(Context context, int filterType) throws EffectException {
+		Attribute attrs = null;
+		switch (filterType) {
+		case Effect.Filter.kNoneFilterRender:
+			attrs = AttributeFactory.makeNoneFilterAttrs();
+			break;
+		case Effect.Filter.kIF1977FilterRender:
+			attrs = AttributeFactory.makeIF1977FilterAttrs(PathTool.getFilterDir(context) + "/nmap.png");  
+			break;	
+		case Effect.Filter.kIFAmaroFilterRender:
+			attrs = AttributeFactory.makeIFAmaroFilterAttrs(PathTool.getFilterDir(context) + "/blackboard.png",
+					PathTool.getFilterDir(context) + "/overlay_map.png", 
+					PathTool.getFilterDir(context) + "/amaro_map.png");  
+			break;	
+		case Effect.Filter.kIFBrannanFilterRender:
+			attrs = AttributeFactory.makeIFBrannanFilterAttrs(
+					PathTool.getFilterDir(context) + "/brannan_process.png",
+					PathTool.getFilterDir(context) + "/brannan_blowout.png", 
+					PathTool.getFilterDir(context) + "/brannan_contrast.png",
+					PathTool.getFilterDir(context) + "/brannan_luma.png",
+					PathTool.getFilterDir(context) + "/brannan_screen.png"
+					);  
+			break;
+		case Effect.Filter.kIFEarlybirdFilterRender:
+			attrs = AttributeFactory.makeIFEarlybirdFilterAttrs(
+					PathTool.getFilterDir(context) + "/earlybird_curves.png",
+					PathTool.getFilterDir(context) + "/earlybird_overlay_map.png", 
+					PathTool.getFilterDir(context) + "/vignette_map.png",
+					PathTool.getFilterDir(context) + "/earlybird_blowout.png",
+					PathTool.getFilterDir(context) + "/earlybird_map.png"
+					);  
+			break;
+		case Effect.Filter.kIFHefeFilterRender:
+			attrs = AttributeFactory.makeIFHefeFilterAttrs(
+					PathTool.getFilterDir(context) + "/edge_burn.png",
+					PathTool.getFilterDir(context) + "/hefe_map.png", 
+					PathTool.getFilterDir(context) + "/hefe_gradient_map.png",
+					PathTool.getFilterDir(context) + "/hefe_soft_light.png",
+					PathTool.getFilterDir(context) + "/hefe_metal.png"
+					);  
+			break;
+		case Effect.Filter.kIFHudsonFilterRender:
+			attrs = AttributeFactory.makeIFHudsonFilterAttrs(
+					PathTool.getFilterDir(context) + "/hudson_background.png",
+					PathTool.getFilterDir(context) + "/overlay_map.png", 
+					PathTool.getFilterDir(context) + "/hudson_map.png"
+					);  
+			break;
+		case Effect.Filter.kIFInkwellFilterRender:
+			attrs = AttributeFactory.makeIFInkwellFilterAttrs(
+					PathTool.getFilterDir(context) + "/inkwell_map.png"
+					);  
+			break;
+		case Effect.Filter.kIFLomoFilterRender:
+			attrs = AttributeFactory.makeIFLomoFilterAttrs(
+					PathTool.getFilterDir(context) + "/lomo_map.png",
+					PathTool.getFilterDir(context) + "/vignette_map.png"
+					);  
+			break;	
+		case Effect.Filter.kIFLordKelvinFilterRender:
+			attrs = AttributeFactory.makeIFLordKelvinFilterAttrs(
+					PathTool.getFilterDir(context) + "/kelvin_map.png"
+					);  
+			break;	
+		case Effect.Filter.kIFNashvilleFilterRender:
+			attrs = AttributeFactory.makeIFNashvilleFilterAttrs(
+					PathTool.getFilterDir(context) + "/nashville_map.png"
+					);  
+			break;	
+		case Effect.Filter.kIFRiseFilterRender:
+			attrs = AttributeFactory.makeIFRiseFilterAttrs(
+					PathTool.getFilterDir(context) + "/blackboard.png",
+					PathTool.getFilterDir(context) + "/overlay_map.png",
+					PathTool.getFilterDir(context) + "/rise_map.png"
+					);  
+			break;	
+		case Effect.Filter.kIFSierraFilterRender:
+			attrs = AttributeFactory.makeIFSierraFilterAttrs(
+					PathTool.getFilterDir(context) + "/sierra_vignette.png",
+					PathTool.getFilterDir(context) + "/overlay_map.png",
+					PathTool.getFilterDir(context) + "/sierra_map.png"
+					);  
+			break;	
+		case Effect.Filter.kIFSutroFilterRender:
+			attrs = AttributeFactory.makeIFSutroFilterAttrs(
+					PathTool.getFilterDir(context) + "/vignette_map.png",
+					PathTool.getFilterDir(context) + "/sutro_metal.png",
+					PathTool.getFilterDir(context) + "/soft_light.png",
+					PathTool.getFilterDir(context) + "/sutro_edge_burn.png",
+					PathTool.getFilterDir(context) + "/sutro_curves.png"
+					);  
+			break;	
+		case Effect.Filter.kIFToasterFilterRender:
+			attrs = AttributeFactory.makeIFToasterFilterAttrs(
+					PathTool.getFilterDir(context) + "/toaster_metal.png",
+					PathTool.getFilterDir(context) + "/toaster_soft_light.png",
+					PathTool.getFilterDir(context) + "/toaster_curves.png",
+					PathTool.getFilterDir(context) + "/toaster_overlay_map_warm.png",
+					PathTool.getFilterDir(context) + "/toaster_color_shift.png"
+					);  
+			break;	
+		case Effect.Filter.kIFValenciaFilterRender:
+			attrs = AttributeFactory.makeIFValenciaFilterAttrs(
+					PathTool.getFilterDir(context) + "/valencia_map.png",
+					PathTool.getFilterDir(context) + "/valencia_gradient_map.png"
+					);  
+			break;	
+		case Effect.Filter.kIFWaldenFilterRender:
+			attrs = AttributeFactory.makeIFWaldenFilterAttrs(
+					PathTool.getFilterDir(context) + "/walden_map.png",
+					PathTool.getFilterDir(context) + "/vignette_map.png"
+					);  
+			break;	
+		case Effect.Filter.kIFXprollFilterRender:
+			attrs = AttributeFactory.makeIFXprollFilterAttrs(
+					PathTool.getFilterDir(context) + "/xpro_map.png",
+					PathTool.getFilterDir(context) + "/vignette_map.png"
+					);  
+			break;	
+		case Effect.Filter.kLomoFilterRender:
+			attrs = AttributeFactory.makeLomoFilterAttrs(
+					PathTool.getFilterDir(context) + "/lomo_map.png", 
+					PathTool.getFilterDir(context) + "/vignette_map.png" );  
+			break;
+		case Effect.Filter.kVignetteFilterRender:
+			attrs = AttributeFactory.makeVignetteFilterAttrs(new PointF(0.5f, 0.5f), 0.3f, 0.75f);
+			break;
+		case Effect.Filter.kSwirlFilterRender:
+			attrs = AttributeFactory.makeSwirlFilterAttrs();
+			break;
+		case Effect.Filter.kAmatorkaFilterRender:
+			attrs = AttributeFactory.makeAmatorkaFilterAttrs(PathTool.getFilterDir(context) + "/lookup_amatorka.png");
+			break;
+		case Effect.Filter.kColorFilterRender:
+			attrs = AttributeFactory.makeColorFilterAttrs(new Color4F(1.0f, 0.0f, 1.0f, 1.0f));
+			break;
+		case Effect.Filter.kAddBlendFilterRender:
+			attrs = AttributeFactory.makeAddBlendFilterAttrs(PathTool.getFilterDir(context) + "/lookup_amatorka.png");
+			break;
+		case Effect.Filter.kAlphaBlendFilterRender:
+			attrs = AttributeFactory.makeAlphaBlendFilterAttrs(PathTool.getFilterDir(context) + "/lookup_amatorka.png", 0.5f);
+			break;
+		case Effect.Filter.kBulgeDistortionFilterRender:
+			attrs = AttributeFactory.makeBulgeDistortionFilterAttrs();
+			break;
+		case Effect.Filter.kGlassSphereFilterRender:
+			attrs = AttributeFactory.makeGlassSphereFilterAttrs();
+			break;
+		case Effect.Filter.kBrightnessFilterRender:
+			attrs = AttributeFactory.makeBrightnessFilterAttrs(0.5f);
+			break;
+		case Effect.Filter.kCGAColorspaceFilterRender:
+			attrs = AttributeFactory.makeCGAColorspaceFilterAttrs();
+			break;
+		case Effect.Filter.kColorBalanceFilterRender:
+			attrs = AttributeFactory.makeColorBalanceFilterAttrs(new float[] {0.3f, 0.0f, 1.0f}, new float[] {0.15f, 0.0f, 1.0f}, new float[] {0.1f, 0.0f, 1.0f});
+			break;
+		case Effect.Filter.kColorInvertFilterRender:
+			attrs = AttributeFactory.makeColorInvertFilterAttrs();
+			break;
+		case Effect.Filter.kContrastFilterRender:
+			attrs = AttributeFactory.makeContrastFilterAttrs(1.5f);
+			break;
+		case Effect.Filter.kCrosshatchFilterRender:
+			attrs = AttributeFactory.makeCrosshatchFilterAttrs(0.03f, 0.003f);
+			break;
+		case Effect.Filter.kExposureFilterRender:
+			attrs = AttributeFactory.makeExposureFilterAttrs(1.0f);
+			break;
+		case Effect.Filter.kFalseColorFilterRender:
+			attrs = AttributeFactory.makeFalseColorFilterAttrs(new float[]{0.0f, 0.0f, 0.5f}, new float[] {1.0f, 0.0f, 0.0f});
+			break;
+		case Effect.Filter.kGammaFilterRender:
+			attrs = AttributeFactory.makeGammaFilterAttrs(2.2f);
+			break;
+		case Effect.Filter.kGrayscaleFilterRender:
+			attrs = AttributeFactory.makeGrayscaleFilterAttrs();
+			break;
+		case Effect.Filter.kHazeFilterRender:
+			attrs = AttributeFactory.makeHazeFilterAttrs(0.2f, 0.2f);
+			break;
+		case Effect.Filter.kHighlightShadowFilterRender:
+			attrs = AttributeFactory.makeHighlightShadowFilterAttrs(0.5f, 1.0f);
+			break;
+		case Effect.Filter.kHueFilterRender:
+			attrs = AttributeFactory.makeHueFilterAttrs(90);
+			break;
+		case Effect.Filter.kKuwaharaFilterRender:
+			attrs = AttributeFactory.makeKuwaharaFilterAttrs(3);
+			break;
+		case Effect.Filter.kMonochromeFilterRender:
+			attrs = AttributeFactory.makeMonochromeFilterAttrs(1.0f, new Color4F(1.0f, 0.0f, 1.0f, 1.0f));
+			break;
+		case Effect.Filter.kOpacityFilterRender:
+			attrs = AttributeFactory.makeOpacityFilterAttrs(0.5f);
+			break;
+		case Effect.Filter.kPixelationFilterRender:
+			attrs = AttributeFactory.makePixelationFilterAttrs(50.0f);
+			break;
+		case Effect.Filter.kPosterizeFilterRender:
+			attrs = AttributeFactory.makePosterizeFilterAttrs(10);
+			break;
+		case Effect.Filter.kRGBFilterRender:
+			attrs = AttributeFactory.makeRGBFilterAttrs(0.1f, 0.2f, 0.3f);
+			break;
+		case Effect.Filter.kSaturationFilterRender:
+			attrs = AttributeFactory.makeSaturationFilterAttrs(1.0f);
+			break;
+		case Effect.Filter.kSharpenFilterRender:
+			attrs = AttributeFactory.makeSharpenFilterAttrs(1.0f);
+			break;
+		case Effect.Filter.kWhiteBalanceFilterRender:
+			attrs = AttributeFactory.makeWhiteBalanceFilterAttrs(5000.0f, 0.0f);
+			break;
+		case Effect.Filter.kSphereRefractionFilterRender:
+			float w = Director.shareDirector().width();
+			float h = Director.shareDirector().height();
+			attrs = AttributeFactory.makeSphereRefractionFilterAttrs(0.25f, w / h, 0.71f, new PointF(0.5f, 0.5f));
+			break;
+		case Effect.Filter.kThreeXThreeTextureSamplingFilterRender:
+			attrs = AttributeFactory.makeThreeXThreeTextureSamplingFilterAttrs();
+			break;
+		case Effect.Filter.kDirectionalSobelEdgeDetectionFilterRender:
+			attrs = AttributeFactory.makeDirectionalSobelEdgeDetectionFilterAttrs();
+			break;
+		case Effect.Filter.kLaplacianFilterRender:
+			attrs = AttributeFactory.makeLaplacianFilterAttrs();
+			break;
+		case Effect.Filter.kNonMaximumSuppressionFilterRender:
+			attrs = AttributeFactory.makeNonMaximumSuppressionFilterAttrs();
+			break;
+		case Effect.Filter.kSobelThresholdFilterRender:
+			attrs = AttributeFactory.makeSobelThresholdFilterAttrs(0.9f);
+			break;
+		case Effect.Filter.kThreeXThreeConvolutionFilterRender:
+			attrs = AttributeFactory.makeThreeXThreeConvolutionFilterAttrs();
+			break;
+		case Effect.Filter.kToonFilterRender:
+			attrs = AttributeFactory.makeToonFilterAttrs(0.2f, 10.0f);
+			break;
+		case Effect.Filter.kWeakPixelInclusionFilterRender:
+			attrs = AttributeFactory.makeWeakPixelInclusionFilterAttrs();
+			break;
+		case Effect.Filter.kChromaKeyBlendFilterRender:
+			attrs = AttributeFactory.makeChromaKeyBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png", 0.1f, 0.3f, new Color4F(0.0f, 1.0f, 0.0f, 1.0f));
+			break;
+		case Effect.Filter.kColorBlendFilterRender:
+			attrs = AttributeFactory.makeColorBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kColorBurnBlendFilterRender:
+			attrs = AttributeFactory.makeColorBurnBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kColorDodgeBlendFilterRender:
+			attrs = AttributeFactory.makeColorDodgeBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kDarkenBlendFilterRender:
+			attrs = AttributeFactory.makeDarkenBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kDivideBlendFilterRender:
+			attrs = AttributeFactory.makeDivideBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kExclusionBlendFilterRender:
+			attrs = AttributeFactory.makeExclusionBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kHardLightBlendFilterRender:
+			attrs = AttributeFactory.makeHardLightBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kHueBlendFilterRender:
+			attrs = AttributeFactory.makeHueBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kLightenBlendFilterRender:
+			attrs = AttributeFactory.makeLightenBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kLinearBurnBlendFilterRender:
+			attrs = AttributeFactory.makeLinearBurnBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kLookupFilterRender:
+			attrs = AttributeFactory.makeLookupFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kLuminosityBlendFilterRender:
+			attrs = AttributeFactory.makeLuminosityBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kMixBlendFilterRender:
+			attrs = AttributeFactory.makeMixBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png", 0.5f);
+			break;
+		case Effect.Filter.kDissolveBlendFilterRender:
+			attrs = AttributeFactory.makeDissolveBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png", 0.5f);
+			break;
+		case Effect.Filter.kMultiplyBlendFilterRender:
+			attrs = AttributeFactory.makeMultiplyBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kNormalBlendFilterRender:
+			attrs = AttributeFactory.makeNormalBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kOverlayBlendFilterRender:
+			attrs = AttributeFactory.makeOverlayBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kSaturationBlendFilterRender:
+			attrs = AttributeFactory.makeSaturationBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kScreenBlendFilterRender:
+			attrs = AttributeFactory.makeScreenBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kSoftLightBlendFilterRender:
+			attrs = AttributeFactory.makeSoftLightBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kSourceOverBlendFilterRender:
+			attrs = AttributeFactory.makeSourceOverBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kSubtractBlendFilterRender:
+			attrs = AttributeFactory.makeSubtractBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kDifferenceBlendFilterRender:
+			attrs = AttributeFactory.makeDifferenceBlendFilterAttrs(PathTool.getFilterDir(context) + "/tex2file.png");
+			break;
+		case Effect.Filter.kSepiaFilterRender:
+			attrs = AttributeFactory.makeSepiaFilterAttrs(1.0f);
+			break;
+		case Effect.Filter.kColorMatrixFilterRender:
+			attrs = AttributeFactory.makeColorMatrixFilterAttrs(1.0f);
+			break;
+		case Effect.Filter.kRGBDilationFilterRender:  
+			attrs = AttributeFactory.makeRGBDilationFilterAttrs();
+			break;
+		case Effect.Filter.kBoxBlurFilterRender:  
+			attrs = AttributeFactory.makeBoxBlurFilterAttrs();
+			break;
+		case Effect.Filter.kGaussianBlurFilterRender:  
+			attrs = AttributeFactory.makeGaussianBlurFilterAttrs();
+			break;
+		case Effect.Filter.kDilationFilterRender:  
+			attrs = AttributeFactory.makeDilationFilterAttrs();
+			break;
+		case Effect.Filter.kSmoothToonFilterRender:  
+			attrs = AttributeFactory.makeSmoothToonFilterAttrs();
+			break;
+		case Effect.Filter.kSobelEdgeDetectionFilterRender:  
+			attrs = AttributeFactory.makeSobelEdgeDetectionFilterAttrs();
+			break;
+		case Effect.Filter.kThresholdEdgeDetectionFilterRender:  
+			attrs = AttributeFactory.makeThresholdEdgeDetectionFilterAttrs();
+			break;
+		case Effect.Filter.kSketchFilterRender:  
+			attrs = AttributeFactory.makeSketchFilterAttrs();
+			break;
+		default:
+			throw new EffectException("error filter type " + filterType);
+		}
+		return attrs;
+	}
+}

@@ -1,0 +1,10 @@
+[Unit]
+Description=Python3.7 SimpleHTTPServer
+After=syslog.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3.7 /var/www/py37httpd/py37httpd.py -d "/media/raid/nas/library" 4812
+
+[Install]
+WantedBy=multi-user.target

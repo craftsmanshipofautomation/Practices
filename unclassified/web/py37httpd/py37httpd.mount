@@ -1,0 +1,14 @@
+[Unit]
+DefaultDependencies=no
+Conflicts=umount.target
+Before=local-fs.target umount.target py37httpd.service
+WantedBy=py37httpd.service
+
+[Mount]
+What=/media/raid/nas/library
+Where=/var/www/py37httpd/
+Type=none
+Options=bind
+
+[Install]
+WantedBy=local-fs.target
