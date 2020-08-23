@@ -31,7 +31,7 @@ mod tests {
 
     use algorithms::sorting;
     use algorithms::util;
-    //#[test]
+    #[test]
     fn test_bubble_sort() {
         let mut arr: [i32;10] = [0; 10];
         util::fill_with_rand(&mut arr);
