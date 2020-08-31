@@ -31,20 +31,43 @@ mod tests {
 
     use algorithms::sorting;
     use algorithms::util;
+    use algorithms::strop;
+    use algorithms::vec;
+    
     #[test]
     fn test_bubble_sort() {
         let mut arr: [i32;10] = [0; 10];
         util::fill_with_rand(&mut arr);
-        util::print_array(&arr);
+        //util::print_array(&arr);
         sorting::bubble_sort(&mut arr, sorting::ORDER::ASCENT);
-        util::print_array(&arr);
+        //util::print_array(&arr);
     }
     #[test]
     fn test_bubble_sort2() {
         let mut arr: [i32;10] = [0; 10];
         util::fill_with_rand(&mut arr);
-        util::print_array(&arr);
+        //util::print_array(&arr);
         sorting::bubble_sort(&mut arr, sorting::ORDER::DESCENT);
-        util::print_array(&arr);
+        //util::print_array(&arr);
     }
+    #[test]
+    fn test_reverse_words()
+    {
+        let s = String::from("Let's                           take        LeetCode contest");
+        let result = strop::reverse_words(s);
+        //println!("result: {}", result);
+        //assert_eq!(result )
+    }
+    #[test]
+    fn test_keys_and_rooms()
+    {
+        //let keys = vec![vec![1, 3], vec![3, 0, 1], vec![2], vec![0]];
+        let keys = vec![vec![1, 3], vec![3, 0, 1], vec![2], vec![0]];
+        assert_eq!(false, vec::can_visit_all_rooms(keys));
+
+    }
+
+
+
+
 }
