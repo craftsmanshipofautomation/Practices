@@ -1,5 +1,3 @@
-# piece of shit
-
 ## Matrix multiplication
 
 Please implement the mutiplication of two matrices for the following two cases
