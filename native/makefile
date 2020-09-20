@@ -13,8 +13,8 @@ LIBSRCDIR := lib
 
 # E denotes sources that use lib and mostly are executables
 # S denotes the otherwise which are mostly sub project
-EDIRS := playground
-SDIRS := take-away
+EDIRS := test
+SDIRS := trade
 EDIRS := $(addsuffix /,${EDIRS})
 SDIRS := $(addsuffix /,${SDIRS})
 EOUTDIRS := $(addprefix ${OUTDIR}/,${EDIRS})
