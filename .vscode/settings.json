@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "*.json": "jsonc",
-        "deque": "cpp",
-        "list": "cpp",
-        "string": "cpp",
-        "vector": "cpp"
-    }
-}
