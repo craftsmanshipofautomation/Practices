@@ -25,21 +25,23 @@ mod tests {
         // assert_eq!(algorithms::sorting::is_first_one_larger(2, 3), false);
         let i = 1;
         let j = 2;
-        assert_eq!(algorithms::sorting::is_first_one_larger(&i, &j), false);
-        assert_eq!(algorithms::sorting::is_first_one_smaller(&j, &i), false);
+        assert_eq!(algorithms::defs::is_first_one_larger(&i, &j), false);
+        assert_eq!(algorithms::defs::is_first_one_smaller(&j, &i), false);
     }
 
-    use algorithms::sorting;
+    use algorithms::bubblesort;
     use algorithms::util;
-    use algorithms::strop;
-    use algorithms::vec;
+    //use algorithms::strop;
+    //use algorithms::vec;
+    use algorithms::defs;
+    use algorithms::heap;
     
     #[test]
     fn test_bubble_sort() {
         let mut arr: [i32;10] = [0; 10];
         util::fill_with_rand(&mut arr);
         //util::print_array(&arr);
-        sorting::bubble_sort(&mut arr, sorting::ORDER::ASCENT);
+        bubblesort::bubble_sort(&mut arr, defs::ORDER::ASCENT);
         //util::print_array(&arr);
     }
     #[test]
@@ -47,23 +49,20 @@ mod tests {
         let mut arr: [i32;10] = [0; 10];
         util::fill_with_rand(&mut arr);
         //util::print_array(&arr);
-        sorting::bubble_sort(&mut arr, sorting::ORDER::DESCENT);
+        bubblesort::bubble_sort(&mut arr, defs::ORDER::DESCENT);
         //util::print_array(&arr);
     }
+    
     #[test]
-    fn test_reverse_words()
+    fn test_heapsort()
     {
-        let s = String::from("Let's                           take        LeetCode contest");
-        let result = strop::reverse_words(s);
-        //println!("result: {}", result);
-        //assert_eq!(result )
-    }
-    #[test]
-    fn test_keys_and_rooms()
-    {
-        //let keys = vec![vec![1, 3], vec![3, 0, 1], vec![2], vec![0]];
-        let keys = vec![vec![1, 3], vec![3, 0, 1], vec![2], vec![0]];
-        assert_eq!(false, vec::can_visit_all_rooms(keys));
+
+        let mut arr: [i32; 11] = [0, 10, 9 ,8, 7, 6, 5, 4, 3, 2, 1];
+        heap::heapsort(&mut arr, defs::ORDER::ASCENT);
+        assert_eq!(arr, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+        heap::heapsort(&mut arr, defs::ORDER::DESCENT);
+        assert_eq!(arr, [0, 10, 9 ,8, 7, 6, 5, 4, 3, 2, 1]);
+
 
     }
 
