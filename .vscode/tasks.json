@@ -1,0 +1,32 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "Practice",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-g",
+                "${file}",
+                "-o",
+                "${workspaceFolder}/native/out/test/${fileBasenameNoExtension}",
+                "-I",
+                "${workspaceFolder}/native/lib",
+                "-L",
+                "${workspaceFolder}/native/out/lib",
+                "-l_cxx",
+                "-fsanitize=address"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ],
+    "version": "2.0.0"
+}

@@ -1,3 +1,4 @@
+/*
 struct Vector
 {
     
@@ -91,7 +92,7 @@ int main()
 
 thread_info（线程）
 
--> *task -> task_struct(进程) -- shangxiawen 
+-> *task -> task_struct(进程) 
 
 ELF ----》内存(stack, heap, page table)
 
@@ -106,7 +107,11 @@ tcp: ack
 client ->syn(random)  SYN FLOOD
 server_> syn+ ack(syn+1)
 client ->ack
+*/
+int main()
+{
 
+}
 
 
 

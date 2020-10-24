@@ -12,3 +12,13 @@ void print(const T& t, int N, bool newline) {
         std::cout << std::endl;
 }
 
+template<typename T>
+void print(T* p, size_t sz)
+{
+    for (size_t i = 0; i < sz; ++i)
+    {
+        std::cout << p[i] << " ";
+    }
+    std::cout << std::endl;
+}
+

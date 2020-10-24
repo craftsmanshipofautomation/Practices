@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "name": "linux",
+            "includePath": [
+                "${workspaceFolder}/native/lib"
+            ]
+        }
+    ],
+    "version": 4
+}

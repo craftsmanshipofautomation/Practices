@@ -35,7 +35,14 @@ template<typename T>
 void print(const T& t, int N, bool newline = true);
 
 
-
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode(int x) : val(x), next(NULL) {}
+};
+ListNode* CreateListNodeFromVector(vector<int> nums);
+void PrintListNode(ListNode*);
+void CleanListNode(ListNode*);
 
 // poisonously slow but convinient
 #include "printer.hpp"
@@ -50,5 +57,8 @@ void print(const T& t, int N, bool newline = true);
 #include "tcp.h"
 
 #include "graph.h"
+
+
+using std::swap;
 
 #endif

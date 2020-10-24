@@ -4,44 +4,54 @@ define MKDIR?
 	$(shell mkdir -p $1)
 endef
 
-OUTDIR := out
-$(call MKDIR?, ${OUTDIR})
-PROJECTDIR := $(shell pwd)
-LIBOUTDIR := ${PROJECTDIR}/out/lib
-$(call MKDIR?, ${LIBOUTDIR})
-LIBSRCDIR := lib
+## 所有二进制都在 out 目录
+OUT_DIR := out
+## 创建目录
+$(call MKDIR?, ${OUT_DIR})
+## 项目目录
+PROJECT_DIR := $(shell pwd)
+## 动态库输出目录
+LIB_OUT_DIR := ${PROJECT_DIR}/out/lib
+## 创建目录
+$(call MKDIR?, ${LIB_OUT_DIR})
+## 动态库源码
+LIB_SRC_DIR := lib
 
-# E denotes sources that use lib and mostly are executables
-# S denotes the otherwise which are mostly sub project
-EDIRS := test
-SDIRS := trade
-EDIRS := $(addsuffix /,${EDIRS})
-SDIRS := $(addsuffix /,${SDIRS})
-EOUTDIRS := $(addprefix ${OUTDIR}/,${EDIRS})
-SOUTDIRS := $(addprefix ${OUTDIR}/,${SDIRS})
-$(foreach d,${EOUTDIRS},$(call MKDIR?,${d}))
-$(foreach d,${SOUTDIRS},$(call MKDIR?,${d}))
+## E 表示使用动态库的代码目录
+## S 表示独立的 sub project
+E_DIRS := test
+S_DIRS := trade
+## 加上后缀
+E_DIRS := $(addsuffix /,${E_DIRS})
+S_DIRS := $(addsuffix /,${S_DIRS})
+## 输出目录
+E_OUT_DIRS := $(addprefix ${OUT_DIR}/,${E_DIRS})
+S_OUT_DIRS := $(addprefix ${OUT_DIR}/,${S_DIRS})
+## 创建这些目录
+$(foreach d,${E_OUT_DIRS},$(call MKDIR?,${d}))
+$(foreach d,${S_OUT_DIRS},$(call MKDIR?,${d}))
 
 # -std=c11 is harmful
 CFLAGS := -m64
 CXXFLAGS := -std=c++11
 CPPFLAGS := -Wall -g -fsanitize=address -fpic -O0
 # -fsanitize=address will generate extra checking code
-#CPPFLAGS := -Wall -g -fpic -O0
-INCLUDEFLAGS := -I${LIBSRCDIR}
-LOADFLAGS := -L${LIBOUTDIR}
-RPATH := -Wl,-rpath=${LIBOUTDIR}
+INCLUDEFLAGS := -I${LIB_SRC_DIR}
+LOADFLAGS := -L${LIB_OUT_DIR}
+RPATH := -Wl,-rpath=${LIB_OUT_DIR}
 LIBFLAGS := -shared
 LINKFLAGSC := -lpthread -lm
 LINKFLAGSCXX := -lgtest -lpthread
 
-# must defer assignment to prevent expansion of automatic variables
-DEPFLAGS = -MT $$@ -MMD -MP -MF ${OUTDIR}/$$*.Td
-POSTCOMPILE = @mv -f ${OUTDIR}/$$*.Td ${OUTDIR}/$$*.d && touch $$@ # touch to update
+## automation 变量需要转义
+## 构建依赖
+DEP_FLAGS = -MT $$@ -MMD -MP -MF ${OUT_DIR}/$$*.Td
+## 编译之后，将 .Td 文件重命名为 .d, 并更新目标的时间戳
+POSTCOMPILE = @mv -f ${OUT_DIR}/$$*.Td ${OUT_DIR}/$$*.d && touch $$@ # touch to update
 
-COMPILE.BASE.C = $(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS)
-COMPILE.BASE.CXX = $(CXX) $(DEPFLAGS) $(CXXFLAGS) $(CPPFLAGS) 
-# only objects has to do with *.d
+## 指定编译器
+COMPILE.BASE.C = $(CC) $(DEP_FLAGS) $(CFLAGS) $(CPPFLAGS)
+COMPILE.BASE.CXX = $(CXX) $(DEP_FLAGS) $(CXXFLAGS) $(CPPFLAGS) 
 COMPILE.OBJ.C =       ${COMPILE.BASE.C}   -c $$<       -o $$@
 COMPILE.OBJ.CXX =     ${COMPILE.BASE.CXX} -c $$<       -o $$@
 COMPILE.SO.C =        ${COMPILE.BASE.C}   ${LIBFLAGS}  -o $$@  $$^
@@ -49,15 +59,17 @@ COMPILE.SO.CXX =      ${COMPILE.BASE.CXX} ${LIBFLAGS}  -o $$@  $$^
 COMPILE.EXE.C =       ${COMPILE.BASE.C}   ${INCLUDEFLAGS} ${LOADFLAGS} -o $$@  $$< ${RPATH} -l_c   ${LINKFLAGSC}      
 COMPILE.EXE.CXX =     ${COMPILE.BASE.CXX} ${INCLUDEFLAGS} ${LOADFLAGS} -o $$@  $$< ${RPATH} -l_cxx ${LINKFLAGSCXX}  
 
-LIBSRCDIR := lib
-LIBCXXSRC := $(wildcard ${LIBSRCDIR}/*.cpp)
-LIBCSRC := $(wildcard ${LIBSRCDIR}/*.c)
+## .cpp 编译 libcxx.so
+LIBCXX_SRC := $(wildcard ${LIB_SRC_DIR}/*.cpp)
+## .c 编译 libc.so
+LIBC_SRC := $(wildcard ${LIB_SRC_DIR}/*.c)
 
-LIBCXX := ${LIBOUTDIR}/lib_cxx.so
-LIBC := ${LIBOUTDIR}/lib_c.so
+LIBCXX := ${LIB_OUT_DIR}/lib_cxx.so
+LIBC := ${LIB_OUT_DIR}/lib_c.so
 
-ECXXSRC := $(wildcard $(addsuffix *.cpp, ${EDIRS})) $(wildcard *.cpp)
-ECSRC := $(wildcard $(addsuffix *.c, ${EDIRS})) $(wildcard *.c)
+## 所有源码文件都带有目录前缀, 包括不同目录
+ECXX_SRC := $(wildcard $(addsuffix *.cpp, ${E_DIRS}))
+EC_SRC := $(wildcard $(addsuffix *.c, ${E_DIRS}))
 
 CPPEXT :=.cpp
 CEXT :=.c
@@ -65,49 +77,60 @@ OBJEXT :=.o
 SOEXT :=.so
 SPACE := 
 
-# $(call DECLARE,group,source-ext,name)
+## $(call DECLARE,group,source-ext,name)
+## 声明：${3} 用来命名： 
 define DECLARE
-${3}OBJS=$${${1}:%${2}=${OUTDIR}/%.o}
-${3}EXTLESS=$${${1}:%${2}=${OUTDIR}/%}
-${3}DEP=$${${1}:%${2}=${OUTDIR}/%.d}
+${3}_OBJS=$${${1}:%${2}=${OUT_DIR}/%.o}
+${3}_EXTLESS=$${${1}:%${2}=${OUT_DIR}/%}
+${3}_DEP=$${${1}:%${2}=${OUT_DIR}/%.d}
 endef
 
-$(eval $(call DECLARE,LIBCXXSRC,${CPPEXT},LIBCXX))
-$(eval $(call DECLARE,LIBCSRC,${CEXT},LIBC))
-$(eval $(call DECLARE,ECXXSRC,${CPPEXT},ECXX))
-$(eval $(call DECLARE,ECSRC,${CEXT},EC))
+$(eval $(call DECLARE,LIBCXX_SRC,${CPPEXT},LIBCXX))
+$(eval $(call DECLARE,LIBC_SRC,${CEXT},LIBC))
+$(eval $(call DECLARE,ECXX_SRC,${CPPEXT},ECXX))
+$(eval $(call DECLARE,EC_SRC,${CEXT},EC))
 
-ECXX := ${ECXXEXTLESS}
-EC := ${ECEXTLESS}
+## 表示不同 E 目录下的执行文件，一个源码文件对应一个执行文件
+ECXX := ${ECXX_EXTLESS}
+EC := ${EC_EXTLESS}
 
-define MAKETARGETS
-${1}: ${OUTDIR}/%${2}: %${3} ${OUTDIR}/%.d
+## 创建文本
+### 带目录前缀的可执行文件: 输出目录/%: %.文件类型 依赖
+###		编译
+###		生成依赖
+define MAKE_TARGETS
+${1}: ${OUT_DIR}/%${2}: %${3} ${OUT_DIR}/%.d
 	${4}
 	${POSTCOMPILE}	
 endef
 
-define  MAKELIBRARY
+## 中间文件: 输出目录/%.中间文件扩展名 : cpp 文件 依赖
+##	
+
+
+## 动态库: %.SO : 中间文件
+define  MAKE_LIBRARY
 ${1}: %${2}: ${3}
 	${4}
 endef
 
 TEST_DIR := test system
 TEST_DATA := $(foreach d,${TEST_DIR},$(wildcard ${d}/*.txt))
-TEST_DATA_DEST := $(addprefix ${OUTDIR}/,${TEST_DATA})
+TEST_DATA_DEST := $(addprefix ${OUT_DIR}/,${TEST_DATA})
 
 all: ${LIBCXX} ${LIBC} ${ECXX} ${EC} ${TEST_DATA_DEST}
 
 # LIBRARIES
-$(eval $(call MAKELIBRARY,${LIBCXX},${SOEXT},${LIBCXXOBJS},${COMPILE.SO.CXX}))
-$(eval $(call MAKELIBRARY,${LIBC},${SOEXT},${LIBCOBJS},${COMPILE.SO.C}))
+$(eval $(call MAKE_LIBRARY,${LIBCXX},${SOEXT},${LIBCXXOBJS},${COMPILE.SO.CXX}))
+$(eval $(call MAKE_LIBRARY,${LIBC},${SOEXT},${LIBCOBJS},${COMPILE.SO.C}))
 
 # LIBRARY OBJECTS
-$(eval $(call MAKETARGETS,${LIBCXXOBJS},${OBJEXT},${CPPEXT},${COMPILE.OBJ.CXX}))
-$(eval $(call MAKETARGETS,${LIBCOBJS},${OBJEXT},${CEXT},${COMPILE.OBJ.C}))
+$(eval $(call MAKE_TARGETS,${LIBCXXOBJS},${OBJEXT},${CPPEXT},${COMPILE.OBJ.CXX}))
+$(eval $(call MAKE_TARGETS,${LIBCOBJS},${OBJEXT},${CEXT},${COMPILE.OBJ.C}))
 
 # EXECUTABLE
-$(eval $(call MAKETARGETS,${ECXX},${SPACE},${CPPEXT},${COMPILE.EXE.CXX}))
-$(eval $(call MAKETARGETS,${EC},${SPACE},${CEXT},${COMPILE.EXE.C}))
+$(eval $(call MAKE_TARGETS,${ECXX},${SPACE},${CPPEXT},${COMPILE.EXE.CXX}))
+$(eval $(call MAKE_TARGETS,${EC},${SPACE},${CEXT},${COMPILE.EXE.C}))
 
 # DEPENDENCIES
 
@@ -120,7 +143,7 @@ endif
 %.d: ;
 
 # TEST DATA
-${TEST_DATA_DEST}: ${OUTDIR}/%.txt: %.txt 
+${TEST_DATA_DEST}: ${OUT_DIR}/%.txt: %.txt 
 	@cp $^ $@ 
 
 .PRECIOUS: ${ECXXDEP} ${ECDEP} ${ECXXOBJS} ${ECOBJS} \
