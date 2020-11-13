@@ -1,3 +1,5 @@
+## 不可维护的编译系统
+
 PKG_CONFIG := pkg-config
 
 define MKDIR?
@@ -33,7 +35,7 @@ $(foreach d,${S_OUT_DIRS},$(call MKDIR?,${d}))
 
 # -std=c11 is harmful
 CFLAGS := -m64
-CXXFLAGS := -std=c++11
+CXXFLAGS := -std=c++17
 CPPFLAGS := -Wall -g -fsanitize=address -fpic -O0
 # -fsanitize=address will generate extra checking code
 INCLUDEFLAGS := -I${LIB_SRC_DIR}
@@ -71,10 +73,7 @@ LIBC := ${LIB_OUT_DIR}/lib_c.so
 ECXX_SRC := $(wildcard $(addsuffix *.cpp, ${E_DIRS}))
 EC_SRC := $(wildcard $(addsuffix *.c, ${E_DIRS}))
 
-CPPEXT :=.cpp
-CEXT :=.c
-OBJEXT :=.o
-SOEXT :=.so
+
 SPACE := 
 
 ## $(call DECLARE,group,source-ext,name)
@@ -85,10 +84,10 @@ ${3}_EXTLESS=$${${1}:%${2}=${OUT_DIR}/%}
 ${3}_DEP=$${${1}:%${2}=${OUT_DIR}/%.d}
 endef
 
-$(eval $(call DECLARE,LIBCXX_SRC,${CPPEXT},LIBCXX))
-$(eval $(call DECLARE,LIBC_SRC,${CEXT},LIBC))
-$(eval $(call DECLARE,ECXX_SRC,${CPPEXT},ECXX))
-$(eval $(call DECLARE,EC_SRC,${CEXT},EC))
+$(eval $(call DECLARE,LIBCXX_SRC,.cpp,LIBCXX))
+$(eval $(call DECLARE,LIBC_SRC,.c,LIBC))
+$(eval $(call DECLARE,ECXX_SRC,.cpp,ECXX))
+$(eval $(call DECLARE,EC_SRC,.c,EC))
 
 ## 表示不同 E 目录下的执行文件，一个源码文件对应一个执行文件
 ECXX := ${ECXX_EXTLESS}
@@ -121,21 +120,21 @@ TEST_DATA_DEST := $(addprefix ${OUT_DIR}/,${TEST_DATA})
 all: ${LIBCXX} ${LIBC} ${ECXX} ${EC} ${TEST_DATA_DEST}
 
 # LIBRARIES
-$(eval $(call MAKE_LIBRARY,${LIBCXX},${SOEXT},${LIBCXXOBJS},${COMPILE.SO.CXX}))
-$(eval $(call MAKE_LIBRARY,${LIBC},${SOEXT},${LIBCOBJS},${COMPILE.SO.C}))
+$(eval $(call MAKE_LIBRARY,${LIBCXX},.so,${LIBCXX_OBJS},${COMPILE.SO.CXX}))
+$(eval $(call MAKE_LIBRARY,${LIBC},.so,${LIBC_OBJS},${COMPILE.SO.C}))
 
 # LIBRARY OBJECTS
-$(eval $(call MAKE_TARGETS,${LIBCXXOBJS},${OBJEXT},${CPPEXT},${COMPILE.OBJ.CXX}))
-$(eval $(call MAKE_TARGETS,${LIBCOBJS},${OBJEXT},${CEXT},${COMPILE.OBJ.C}))
+$(eval $(call MAKE_TARGETS,${LIBCXX_OBJS},.o,.cpp,${COMPILE.OBJ.CXX}))
+$(eval $(call MAKE_TARGETS,${LIBC_OBJS},.o,.c,${COMPILE.OBJ.C}))
 
 # EXECUTABLE
-$(eval $(call MAKE_TARGETS,${ECXX},${SPACE},${CPPEXT},${COMPILE.EXE.CXX}))
-$(eval $(call MAKE_TARGETS,${EC},${SPACE},${CEXT},${COMPILE.EXE.C}))
+$(eval $(call MAKE_TARGETS,${ECXX},${SPACE},.cpp,${COMPILE.EXE.CXX}))
+$(eval $(call MAKE_TARGETS,${EC},${SPACE},.c,${COMPILE.EXE.C}))
 
 # DEPENDENCIES
 
 ifneq "${MAKECMDGOALS}" "clean"
--include ${ECXXDEP} ${ECDEP} ${LIBCXXDEP} ${LIBCDEP}
+-include ${ECXX_DEP} ${EC_DEP} ${LIBCXX_DEP} ${LIBC_DEP}
 endif
 
 # SUB PROJECTS 
@@ -146,8 +145,8 @@ endif
 ${TEST_DATA_DEST}: ${OUT_DIR}/%.txt: %.txt 
 	@cp $^ $@ 
 
-.PRECIOUS: ${ECXXDEP} ${ECDEP} ${ECXXOBJS} ${ECOBJS} \
-			${LIBCXXDEP} ${LIBCDEP} ${LIBCXXOBJS} ${LIBCOBJS}
+.PRECIOUS: ${ECXX_DEP} ${EC_DEP} ${ECXXOBJS} ${ECOBJS} \
+			${LIBCXX_DEP} ${LIBC_DEP} ${LIBCXX_OBJS} ${LIBC_OBJS}
 
 .PHONY: config clean run
 config:
